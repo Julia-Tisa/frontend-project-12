@@ -1,8 +1,20 @@
-import React from "react";
+import axios from 'axios';
+import React, { useEffect, useRef, useState } from "react";
+import { Button, Form } from 'react-bootstrap';
+import { useLocation, useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/index.jsx';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 
 const BuildPage = () => {
+  const auth = useAuth();
+  const [authFailed, setAuthFailed] = useState(false);
+  const inputRef = useRef();
+ // const location = useLocation();
+  const navigate = useNavigate();
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -17,42 +29,67 @@ const BuildPage = () => {
         .min(5, "Must be longer than 5 characters")
         .required("Required")
     }),
-    onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      setAuthFailed(false);
+
+      try {
+        const res = await axios.post('api/v1/login', values);
+        localStorage.setItem('userId', JSON.stringify({ ...res.data }));
+        auth.logIn({ username: values.username });
+        navigate('/');
+      } catch (err) {
+        formik.setSubmitting(false);
+        if (err.isAxiosError && err.response.status === 401) {
+          setAuthFailed(true);
+          inputRef.current.select();
+          return;
+        }
+        throw err;
+      }
     },
   });
-  return (
-    <form onSubmit={formik.handleSubmit}>
-      <label htmlFor="username">Username</label>
-      <input
-        placeholder="Julia"
-        id="username"
-        name="username"
-        type="text"
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.username}
-      />
-      {formik.touched.username && formik.errors.username ? (
-        <div>{formik.errors.username}</div>
-      ) : null}
-  
-      <label htmlFor="password">Password</label>
-      <input
-        placeholder="12345"
-        id="password"
-        name="password"
-        type="text"
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values.password}
-      />
-      {formik.touched.password && formik.errors.password ? (
-        <div>{formik.errors.password}</div>
-      ) : null}
 
-      <button type="submit">Submit</button>
-    </form>
+  return (
+    <div className="container-fluid">
+      <div className="row justify-content-center pt-5">
+        <div className="col-sm-4">
+          <Form onSubmit={formik.handleSubmit} className="p-3">
+            <fieldset disabled={formik.isSubmitting}>
+              <Form.Group>
+                <Form.Label htmlFor="username">Username</Form.Label>
+                <Form.Control
+                  onChange={formik.handleChange}
+                  value={formik.values.username}
+                  placeholder="username"
+                  name="username"
+                  id="username"
+                  autoComplete="username"
+                  isInvalid={authFailed}
+                  required
+                  ref={inputRef}
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label htmlFor="password">Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  onChange={formik.handleChange}
+                  value={formik.values.password}
+                  placeholder="password"
+                  name="password"
+                  id="password"
+                  autoComplete="current-password"
+                  isInvalid={authFailed}
+                  required
+                />
+                <Form.Control.Feedback type="invalid">the username or password is incorrect</Form.Control.Feedback>
+              </Form.Group>
+              <Button type="submit" variant="outline-primary">Submit</Button>
+            </fieldset>
+          </Form>
+        </div>
+      </div>
+    </div>
   );
 };
 
