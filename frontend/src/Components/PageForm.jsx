@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Form } from 'react-bootstrap';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/index.jsx';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -94,39 +94,3 @@ const BuildPage = () => {
 };
 
 export const PageForm = () => BuildPage();
-
-   /* <div className="container">
-    <h1>Sign up</h1>
-    <Formik
-      initialValues={{
-        username: "",
-        password: ""
-      }}
-      validationSchema={BasicFormSchema}
-      onSubmit={values => {
-        alert(values);
-      }}
-      render={({ errors, touched }) => (
-        <Form className="form-container">
-
-          <label htmlFor="username">Username</label>
-          <Field name="username" placeholder="Julia" type="text" />
-
-          {errors.username &&
-            touched.username && (
-              <div className="field-error">{errors.username}</div>
-            )}
-
-          <label htmlFor="password">Password</label>
-          <Field name="password" placeholder="12345" type="password" />
-
-          {errors.password &&
-            touched.password && (
-              <div className="field-error">{errors.password}</div>
-            )}
-
-          <button type="submit">Submit</button>
-        </Form>
-      )}
-    />
-  </div> */
