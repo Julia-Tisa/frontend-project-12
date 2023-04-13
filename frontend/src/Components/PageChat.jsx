@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Channels from './Channels.jsx';
-import Messages from './Messages.jsx';
+import Messages from './messages/MainComponent';
 import { actions } from '../slices/index.js';
 
 const getAuthHeader = () => {
@@ -17,8 +17,7 @@ const getAuthHeader = () => {
 
 const BuildPage = () => {
   const dispatch = useDispatch();
-  const channels = useSelector((s) => s.channels);
-  console.log('initial state: ', channels);
+  const channelsInfo = useSelector((s) => s)
 
   useEffect(() => {
     const getData = async () => {
@@ -29,10 +28,8 @@ const BuildPage = () => {
     getData();
   }, [dispatch])
 
-  console.log('new state: ', channels);
-
-  if (channels.loading) {
-    return <h1>Загрузка...</h1>;
+  if (channelsInfo.loading) {
+    return <h1>Loading...</h1>;
   }
 
 

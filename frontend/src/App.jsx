@@ -49,8 +49,8 @@ function App() {
       <Navbar bg="white" expand="lg" className="shadow-sm">
         <Container>
           <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
+          <AuthButton />
         </Container>
-        <AuthButton />
       </Navbar>
       <div className="container p-3">
           <Routes>

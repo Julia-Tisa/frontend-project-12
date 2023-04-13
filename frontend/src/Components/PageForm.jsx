@@ -34,6 +34,7 @@ const BuildPage = () => {
       try {
         const res = await axios.post('api/v1/login', values);
         localStorage.setItem('userId', JSON.stringify({ ...res.data }));
+        localStorage.setItem('name', values.username);
         auth.logIn({ username: values.username });
         navigate('/');
       } catch (err) {
