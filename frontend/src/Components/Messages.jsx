@@ -10,7 +10,6 @@ const Messages = () => {
     </p>
     <span className="text-muted">0 messages</span>
   </div>
-        {'messages'}
       </div>
     </Col>
   );
