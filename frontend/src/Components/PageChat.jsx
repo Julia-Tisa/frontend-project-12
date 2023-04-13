@@ -1,6 +1,9 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { Container, Nav, Button } from 'react-bootstrap';
+import React, { useEffect } from 'react';
+import { Container } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import Channels from './Channels.jsx';
+import Messages from './Messages.jsx';
+import { actions } from '../slices/index.js';
 
 const getAuthHeader = () => {
   const userId = JSON.parse(localStorage.getItem('userId'));
@@ -13,68 +16,34 @@ const getAuthHeader = () => {
 };
 
 const BuildPage = () => {
-  const [channel, setChannels] = useState('');
-  const [currentChannelId, setCurrentId] = useState('');
-  
-  const getText = async () => {
-    const authHeader = await getAuthHeader();
-    const response = await axios.get('api/v1/data', { headers: authHeader });
-    console.log(response.data);    
-  }
+  const dispatch = useDispatch();
+  const channels = useSelector((s) => s.channels);
+  console.log('initial state: ', channels);
 
   useEffect(() => {
-    getText();
-  }, [])
+    const getData = async () => {
+      const authHeader = await getAuthHeader();
+      dispatch(actions.getData(authHeader));    
+    }
 
-  const handleClick = (id) => {
-     setCurrentId(id);
-  };
+    getData();
+  }, [dispatch])
 
-  const channels = JSON.parse(localStorage.getItem('Channels'));
-  console.log(channels);
+  console.log('new state: ', channels);
+
+  if (channels.loading) {
+    return <h1>Загрузка...</h1>;
+  }
+
+
   return (
     <Container className="h-100 my-4 overflow-hidden rounded shadow">
-    <div className="row h-100 bg-white flex-md-row">
-    <>
-      <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
-        <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-          <b>Channels</b>
-          <Button type="button" className="p-0 text-primary" variant="group-vertical">
-            <span className="visually-hidden">+</span>
-          </Button>
-        </div>
-        <Nav
-          as="ul"
-          className="flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
-          id="channels-box"
-          activeKey={1}
-        >
-                <Nav.Item className="w-100" key={1} as="li">
-                  <Button
-                    variant={1 === 1 ? 'secondary' : 'light'}
-                    className="w-100 rounded-0 text-start"
-                    onClick={() => handleClick(1)}
-                  >
-                    <span className="me-1">#</span>
-                    {channels[0].name}
-                  </Button>
-                </Nav.Item>
-                <Nav.Item className="w-100" key={2} as="li">
-                  <Button
-                    variant={2 === 1 ? 'secondary' : 'light'}
-                    className="w-100 rounded-0 text-start"
-                    onClick={() => handleClick(1)}
-                  >
-                    <span className="me-1">#</span>
-                    {channels[1].name}
-                  </Button>
-                </Nav.Item>
-        </Nav>
+      <div className="row h-100 bg-white flex-md-row">
+        <Channels />
+        <Messages />
       </div>
-    </>
-    </div>
-  </Container>
-  )
-  };
+    </Container>
+  );
+};
   
   export const PageChat = () => BuildPage();

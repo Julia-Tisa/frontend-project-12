@@ -1,12 +1,11 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import init from './init.jsx';
 import 'bootstrap/dist/css/bootstrap.css';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-    <App />
-);
+const app = async () => {
 
-reportWebVitals();
+  const root =  ReactDOM.createRoot(document.getElementById('root'));
+  root.render(await init());
+};	
+
+app();

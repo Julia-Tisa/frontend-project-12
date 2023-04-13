@@ -38,7 +38,7 @@ function App() {
     const auth = useAuth();
     return (
       auth.loggedIn
-        ? <Button onClick={auth.logOut}>Выйти</Button>
+        ? <Button onClick={auth.logOut}>Exit</Button>
         : null
     );
   };
