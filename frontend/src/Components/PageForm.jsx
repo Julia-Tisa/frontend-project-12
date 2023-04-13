@@ -10,7 +10,6 @@ const BuildPage = () => {
   const auth = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
- // const location = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
     inputRef.current.focus();
