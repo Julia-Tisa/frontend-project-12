@@ -5,7 +5,7 @@ import { BsArrowRightSquare } from 'react-icons/bs';
 import * as yup from 'yup';
 import { useAuth, useSocket } from '../../hooks/index.jsx';
 
-const SendingWindow = () => {
+const SendingWindow = ({ currentChannel }) => {
   const { user } = useAuth();
   const socket = useSocket();
   const messageRef = useRef(null);
@@ -21,6 +21,7 @@ const SendingWindow = () => {
     onSubmit: async (values) => {
       const message = {
         text: values.body,
+        channelId: currentChannel.id,
         username: user.username,
       };
 

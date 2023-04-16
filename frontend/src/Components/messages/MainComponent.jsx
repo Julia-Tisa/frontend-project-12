@@ -6,19 +6,28 @@ import Header from './Header.jsx';
 import Message from './Message.jsx'; 
 
 const MainComponent = () => {
+  const { channels, currentChannelId } = useSelector((s) => s.channelsInfo);
   const messages = useSelector((s) => s.messagesInfo.messages);
+  
+  const currentChannel = channels
+    .find(({ id }) => id === currentChannelId);
+
+  const currentMessages = messages
+    .filter((message) => message.channelId === currentChannelId);
 
   return (
     <Col className="p-0 h-100">
       <div className="d-flex flex-column h-100">
         <Header
-        messagesCount={messages.length} />
+        messagesCount={currentMessages.length}
+        currentChannel={currentChannel} 
+        />
         <div id="messages-box" className="chat-messages overflow-auto px-5">
-        {messages.map((message) => (
+        {currentMessages.map((message) => (
             <Message message={message} key={message.id} />
           ))}
         </div>
-        <SendingWindow />
+        <SendingWindow currentChannel={currentChannel} />
       </div>
     </Col>
   );

@@ -1,12 +1,14 @@
 import React from 'react';
 
-const Header = ({ messagesCount }) => (
+const Header = ({ messagesCount, currentChannel }) => (
   <div className="bg-light mb-4 p-3 shadow-sm small">
     <p className="m-0">
-      # general
+      #
+      {' '}
+      {currentChannel ? currentChannel.name : 'undefindChannel'}
     </p>
     <span className="text-muted">
-    {messagesCount}
+      {messagesCount}
       {' '}
       сообщений
     </span>

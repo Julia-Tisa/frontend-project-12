@@ -10,7 +10,14 @@ import { io } from 'socket.io-client';
 import { actions } from './slices/index.js';
 import { useDispatch } from 'react-redux';
 
-const { addMessage } = actions;
+const {
+  addMessage,
+  removeMessage,
+  addChannel,
+  setActualChannel,
+  deleteChannel,
+  channelRename,
+} = actions;
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -27,6 +34,7 @@ const AuthProvider = ({ children }) => {
 
   const logOut = useCallback(() => {
     localStorage.removeItem('userId');
+    localStorage.removeItem('name');
     setUser(null);
     setLoggedIn(false);
   }, []);
@@ -73,14 +81,57 @@ function App() {
   webSocket.on('newMessage', (payload) => {
     dispatch(addMessage(payload));
   });
+  webSocket.on('newChannel', (payload) => {
+    dispatch(addChannel(payload));
+  });
+  webSocket.on('removeChannel', (payload) => {
+    dispatch(removeChannel(payload));
+  });
+  webSocket.on('renameChannel', (payload) => {
+    dispatch(renameChannel(payload));
+  });
 
   const sendMessage = useCallback((...args) => webSocket.emit('newMessage', ...args), [webSocket]);
+  const addNewChannel = useCallback((name, cb) => {
+    webSocket.emit('newChannel', { name }, (response) => {
+      const { status, data: { id } } = response;
+
+      if (status === 'ok') {
+        dispatch(setActualChannel(id));
+        cb();
+        return response.data;
+      }
+      return status;
+    });
+  }, [dispatch, webSocket]);
+  const removeChannel = useCallback((id) => {
+    webSocket.emit('removeChannel', { id }, (response) => {
+      const { status } = response;
+      if (status === 'ok') {
+        return dispatch(removeChannel(id));
+      }
+      return status;
+    });
+  }, [dispatch, webSocket]);
+  const renameChannel = useCallback(({ id, name }, cb) => {
+    webSocket.emit('renameChannel', { id, name }, (response) => {
+      const { status } = response;
+      if (status === 'ok') {
+        dispatch(renameChannel({ id, name }));
+        cb();
+      }
+      return status;
+    });
+  }, [dispatch, webSocket]);
 
   const webSocketValue = useMemo(
     () => ({
       sendMessage,
+      addNewChannel,
+      removeChannel,
+      renameChannel
     }),
-    [sendMessage],
+    [sendMessage, addNewChannel, removeChannel, renameChannel],
   );
 
   return (

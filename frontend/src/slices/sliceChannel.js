@@ -19,6 +19,24 @@ const initialState = { loading: false, channels: [], currentChannelId: null };
 const channelsSlice = createSlice({
   name: 'channels',
   initialState,
+  reducers: {
+    setCurrentChannel: (state, { payload }) => {
+      state.currentChannelId = payload.id;
+    },
+    addChannel: (state, { payload }) => {
+      state.channels.push(payload);
+    },
+    removeChannel: (state, { payload }) => {
+      state.channels = state.channels
+        .filter((channel) => channel.id !== payload.id);
+    },
+    renameChannel: (state, { payload }) => {
+      const { id, name } = payload;
+      const currentChanel = state.channels
+        .find((channel) => channel.id === id);
+      currentChanel.name = name;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getData.pending, (state) => {

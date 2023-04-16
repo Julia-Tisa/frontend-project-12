@@ -2,12 +2,14 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { BsPlusSquare } from 'react-icons/bs';
 import { Nav, Button } from 'react-bootstrap';
+import { actions } from '../slices/index.js';
 
 const Channels = () => {
   const { channels, currentChannelId } = useSelector((s) => s.channelsInfo);
+  const dispatch = useDispatch();
 
   const handleClick = (id) => {
-    console.log({ id });
+    dispatch(actions.setCurrentChannel({ id }));
   };
 
   return (
