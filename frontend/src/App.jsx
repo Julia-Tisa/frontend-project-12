@@ -12,11 +12,10 @@ import { useDispatch } from 'react-redux';
 
 const {
   addMessage,
-  removeMessage,
   addChannel,
-  setActualChannel,
-  deleteChannel,
-  channelRename,
+  setCurrentChannel,
+  removeChannel,
+  renameChannel,
 } = actions;
 
 const AuthProvider = ({ children }) => {
@@ -85,35 +84,36 @@ function App() {
     dispatch(addChannel(payload));
   });
   webSocket.on('removeChannel', (payload) => {
-    dispatch(removeChannel(payload));
+    dispatch(removeChannel(payload.id));
   });
   webSocket.on('renameChannel', (payload) => {
     dispatch(renameChannel(payload));
   });
 
   const sendMessage = useCallback((...args) => webSocket.emit('newMessage', ...args), [webSocket]);
-  const addNewChannel = useCallback((name, cb) => {
+  const newChannel = useCallback((name, cb) => {
     webSocket.emit('newChannel', { name }, (response) => {
       const { status, data: { id } } = response;
 
       if (status === 'ok') {
-        dispatch(setActualChannel(id));
+        dispatch(setCurrentChannel({ id }));
         cb();
         return response.data;
       }
       return status;
     });
   }, [dispatch, webSocket]);
-  const removeChannel = useCallback((id) => {
-    webSocket.emit('removeChannel', { id }, (response) => {
+  const removingChannel = useCallback((id, cb) => {
+    webSocket.emit('removeChannel', id, (response) => {
       const { status } = response;
       if (status === 'ok') {
-        return dispatch(removeChannel(id));
+        dispatch(removeChannel(id));
+        cb();
       }
       return status;
     });
   }, [dispatch, webSocket]);
-  const renameChannel = useCallback(({ id, name }, cb) => {
+  const renamingChannel = useCallback(({ id, name }, cb) => {
     webSocket.emit('renameChannel', { id, name }, (response) => {
       const { status } = response;
       if (status === 'ok') {
@@ -127,11 +127,11 @@ function App() {
   const webSocketValue = useMemo(
     () => ({
       sendMessage,
-      addNewChannel,
-      removeChannel,
-      renameChannel
+      newChannel,
+      removingChannel,
+      renamingChannel
     }),
-    [sendMessage, addNewChannel, removeChannel, renameChannel],
+    [sendMessage, newChannel, removingChannel, renamingChannel],
   );
 
   return (

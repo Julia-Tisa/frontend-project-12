@@ -21,12 +21,12 @@ const BuildPage = () => {
     },
     validationSchema: yup.object().shape({
       username: yup.string()
-        .min(2, "Must be longer than 2 characters")
-        .max(20, "Nice try, nobody has a first name that long")
-        .required("Required"),
+        .min(2, 'Must be longer than 2 characters')
+        .max(20, 'Nice try, nobody has a first name that long')
+        .required('Required'),
       password: yup.string()
-        .min(5, "Must be longer than 5 characters")
-        .required("Required")
+        .min(5, 'Must be longer than 5 characters')
+        .required('Required')
     }),
     onSubmit: async (values) => {
       setAuthFailed(false);
