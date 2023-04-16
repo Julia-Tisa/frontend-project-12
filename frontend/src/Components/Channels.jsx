@@ -6,7 +6,9 @@ import { Nav, Button } from 'react-bootstrap';
 const Channels = () => {
   const { channels, currentChannelId } = useSelector((s) => s.channelsInfo);
 
-  const handleClick = (id) => { console.log(id); };
+  const handleClick = (id) => {
+    console.log({ id });
+  };
 
   return (
     <div className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">

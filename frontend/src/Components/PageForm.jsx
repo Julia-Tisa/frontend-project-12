@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import useAuth from '../hooks/index.jsx';
+import { useAuth } from '../hooks/index.jsx';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 

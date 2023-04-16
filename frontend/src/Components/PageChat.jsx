@@ -29,7 +29,13 @@ const BuildPage = () => {
   }, [dispatch])
 
   if (channelsInfo.loading) {
-    return <h1>Loading...</h1>;
+    return (
+      <Container className="h-100 my-4 overflow-hidden rounded shadow">
+        <div className="row h-100 bg-white flex-md-row">
+        <h1>Loading...</h1>
+        </div>
+      </Container>
+    );
   }
 
 
