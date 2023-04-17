@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Form } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { Button, Form, Col, Card, Row, FormLabel } from 'react-bootstrap';
+import { useNavigate, NavLink } from 'react-router-dom';
 import { useAuth } from '../hooks/index.jsx';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -21,7 +21,7 @@ const BuildPage = () => {
     },
     validationSchema: yup.object().shape({
       username: yup.string()
-        .min(2, 'Must be longer than 2 characters')
+        .min(3, 'Must be longer than 3 characters')
         .max(20, 'Nice try, nobody has a first name that long')
         .required('Required'),
       password: yup.string()
@@ -50,15 +50,17 @@ const BuildPage = () => {
   });
 
   return (
-    <div className="container-fluid">
-      <div className="row justify-content-center pt-5">
-        <div className="col-sm-4">
-          <Form onSubmit={formik.handleSubmit} className="p-3">
+    <div className="container-fluid h-100">
+      <Row className="justify-content-center align-content-center h-100">
+        <Col className="col-12 col-md-8 col-xxl-6">
+          <Card className="shadow-sm">
+            <Card.Body className="p-5 row">
+          <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
             <fieldset disabled={formik.isSubmitting}>
-              <Form.Group>
-                <Form.Label htmlFor="username">Username</Form.Label>
+              <Form.Group className="mb-3 form-floating">
                 <Form.Control
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   value={formik.values.username}
                   placeholder="username"
                   name="username"
@@ -68,12 +70,13 @@ const BuildPage = () => {
                   required
                   ref={inputRef}
                 />
+                <FormLabel>Username</FormLabel>
               </Form.Group>
-              <Form.Group>
-                <Form.Label htmlFor="password">Password</Form.Label>
+              <Form.Group className="mb-4 form-floating">
                 <Form.Control
                   type="password"
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   value={formik.values.password}
                   placeholder="password"
                   name="password"
@@ -82,14 +85,24 @@ const BuildPage = () => {
                   isInvalid={authFailed}
                   required
                 />
-                <Form.Control.Feedback type="invalid">the username or password is incorrect</Form.Control.Feedback>
+                <FormLabel>Password</FormLabel>
+                <Form.Control.Feedback type="invalid" className="invalid-feedback">the username or password is incorrect</Form.Control.Feedback>
               </Form.Group>
-              <Button type="submit" variant="outline-primary">Submit</Button>
+              <Button type="submit" variant="outline-primary" className="w-100 mb-3">Submit</Button>
             </fieldset>
           </Form>
+        </Card.Body>
+        <Card.Footer className="p-4">
+        <div className="text-center">
+        <span>Don't have an account?</span>
+        {' '}
+        <NavLink to="/signup">Sign Up</NavLink>
         </div>
-      </div>
-    </div>
+        </Card.Footer>
+        </Card>
+        </Col>
+        </Row>
+        </div>
   );
 };
 

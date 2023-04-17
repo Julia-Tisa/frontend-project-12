@@ -4,6 +4,7 @@ import { Button, Navbar, Container } from 'react-bootstrap';
 import { Page404 } from './components/Page404.jsx';
 import { PageForm } from './components/PageForm.jsx';
 import { PageChat } from './components/PageChat.jsx';
+import { PageRegistration } from './components/PageRegistration.jsx';
 import { AuthContext, SocketContext } from './contexts/index.jsx';
 import { useAuth } from './hooks/index.jsx';
 import { io } from 'socket.io-client';
@@ -148,6 +149,7 @@ function App() {
           <Routes>
             <Route path='*' element={<Page404 />} />
             <Route path="/login" element={<PageForm />} />
+            <Route path='/signup' element={<PageRegistration />} />
             <Route path='/' element={(
                 <PrivateRoute>
                   <PageChat />

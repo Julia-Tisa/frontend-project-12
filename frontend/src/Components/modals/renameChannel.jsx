@@ -78,7 +78,7 @@ const RenameChannel = ({ modalInfo, onHide }) => {
                 onClick={formik.handleSubmit}
                 disabled={formik.errors.name}
               >
-                Send
+                Rename
               </Button>
             </Modal.Footer>
           </Form.Group>

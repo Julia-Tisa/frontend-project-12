@@ -76,7 +76,7 @@ const AddChannel = ({ onHide }) => {
                     onClick={formik.handleSubmit}
                     disabled={formik.errors.name}
                   >
-                    Send
+                    Create
                   </Button>
                 </Modal.Footer>
               </Form.Group>
