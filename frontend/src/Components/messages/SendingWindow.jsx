@@ -3,6 +3,7 @@ import { Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { BsArrowRightSquare } from 'react-icons/bs';
+import leoProfanity from 'leo-profanity';
 import * as yup from 'yup';
 import { useAuth, useSocket } from '../../hooks/index.jsx';
 
@@ -21,8 +22,9 @@ const SendingWindow = ({ currentChannel }) => {
       body: '',
     },
     onSubmit: async (values) => {
+      const text = leoProfanity.clean(values.body);
       const message = {
-        text: values.body,
+        text,
         channelId: currentChannel.id,
         username: user.username,
       };

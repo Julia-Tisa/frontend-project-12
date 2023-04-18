@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import { io } from 'socket.io-client';
+import leoProfanity from 'leo-profanity';
 import { Page404 } from './components/Page404.jsx';
 import { PageForm } from './components/PageForm.jsx';
 import { PageChat } from './components/PageChat.jsx';
@@ -82,6 +83,10 @@ function App() {
   const { t } = useTranslation();
   const webSocket = io();
   const dispatch = useDispatch();
+
+  const ru = leoProfanity.getDictionary('ru');
+  const en = leoProfanity.getDictionary('en');
+  leoProfanity.add(ru, en);
 
   webSocket.on('newMessage', (payload) => {
     dispatch(addMessage(payload));

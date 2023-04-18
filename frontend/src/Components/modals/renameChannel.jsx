@@ -5,6 +5,7 @@ import { Modal, Form, Button, FormControl } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import leoProfanity from 'leo-profanity';
 import { useSocket } from '../../hooks/index.jsx';
 
 const validationChannelName = (channelsNames, t) => yup.object().shape({
@@ -41,8 +42,9 @@ const RenameChannel = ({ modalInfo, onHide }) => {
       name: currentChannel.name,
     },
     onSubmit: async (values) => {
+      const name = leoProfanity.clean(values.name);
       try {
-        webSocket.renamingChannel({ name: values.name, id: currentChannel.id }, onHideHandler);
+        webSocket.renamingChannel({ name, id: currentChannel.id }, onHideHandler);
         formik.values.name = '';
       } catch(error) {
         console.log(error.message);

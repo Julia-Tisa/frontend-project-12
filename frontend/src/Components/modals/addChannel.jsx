@@ -4,6 +4,7 @@ import { Modal, Form, Button, FormControl } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import leoProfanity from 'leo-profanity';
 import { useSocket } from '../../hooks/index.jsx';
 import { toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
@@ -40,8 +41,9 @@ const AddChannel = ({ onHide }) => {
       name: '',
     },
     onSubmit: async (values) => {
+      const name = leoProfanity.clean(values.name);
       try {
-        await webSocket.newChannel(values.name, onHideHandler);
+        await webSocket.newChannel(name, onHideHandler);
         formik.values.name = '';
       } catch(error) {
         console.log(error.message);
