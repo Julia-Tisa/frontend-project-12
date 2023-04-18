@@ -1,17 +1,19 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
-import { BrowserRouter as Router, Routes, Route, useLocation, Navigate, Link } from 'react-router-dom';
+import {
+  BrowserRouter as Router, Routes, Route, useLocation, Navigate, Link,
+} from 'react-router-dom';
 import { Button, Navbar, Container } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
 import { Provider, ErrorBoundary } from '@rollbar/react';
-import 'react-toastify/dist/ReactToastify.css'
+import 'react-toastify/dist/ReactToastify.css';
 import { io } from 'socket.io-client';
 import leoProfanity from 'leo-profanity';
-import { Page404 } from './components/Page404.jsx';
-import { PageForm } from './components/PageForm.jsx';
-import { PageChat } from './components/PageChat.jsx';
-import { PageRegistration } from './components/PageRegistration.jsx';
+import Page404 from './components/Page404.jsx';
+import PageForm from './components/PageForm.jsx';
+import PageChat from './components/PageChat.jsx';
+import PageRegistration from './components/PageRegistration.jsx';
 import { AuthContext, SocketContext } from './contexts/index.jsx';
 import { useAuth } from './hooks/index.jsx';
 import { actions } from './slices/index.js';
@@ -37,9 +39,9 @@ const AuthProvider = ({ children }) => {
     savedUserData ? { username: savedUserData.username } : null,
   );
 
-  const logIn = useCallback((user) => {
+  const logIn = useCallback((human) => {
     setLoggedIn(true);
-    setUser({ username: user.username });
+    setUser({ username: human.username });
   }, []);
 
   const logOut = useCallback(() => {
@@ -85,7 +87,7 @@ const AuthButton = () => {
   );
 };
 
-function App() {
+const App = () => {
   const { t } = useTranslation();
   const webSocket = io();
   const dispatch = useDispatch();
@@ -146,7 +148,7 @@ function App() {
       sendMessage,
       newChannel,
       removingChannel,
-      renamingChannel
+      renamingChannel,
     }),
     [sendMessage, newChannel, removingChannel, renamingChannel],
   );
@@ -154,34 +156,37 @@ function App() {
   return (
     <Provider config={rollbarConfig}>
       <ErrorBoundary>
-      <SocketContext.Provider value={webSocketValue}>
-    <AuthProvider>
-    <div className="d-flex flex-column h-100">
-      <Router>
-      <Navbar bg="white" expand="lg" className="shadow-sm">
-        <Container>
-          <Navbar.Brand as={Link} to="/">{t('headers.logo')}</Navbar.Brand>
-          <AuthButton />
-        </Container>
-      </Navbar>
-          <Routes>
-            <Route path='*' element={<Page404 />} />
-            <Route path="/login" element={<PageForm />} />
-            <Route path='/signup' element={<PageRegistration />} />
-            <Route path='/' element={(
-                <PrivateRoute>
-                  <PageChat />
-                </PrivateRoute>
-              )} />
-          </Routes>
-          <ToastContainer />
-      </Router>
-      </div>
-    </AuthProvider>
-    </SocketContext.Provider>
+        <SocketContext.Provider value={webSocketValue}>
+          <AuthProvider>
+            <div className="d-flex flex-column h-100">
+              <Router>
+                <Navbar bg="white" expand="lg" className="shadow-sm">
+                  <Container>
+                    <Navbar.Brand as={Link} to="/">{t('headers.logo')}</Navbar.Brand>
+                    <AuthButton />
+                  </Container>
+                </Navbar>
+                <Routes>
+                  <Route path="*" element={<Page404 />} />
+                  <Route path="/login" element={<PageForm />} />
+                  <Route path="/signup" element={<PageRegistration />} />
+                  <Route
+                    path="/"
+                    element={(
+                      <PrivateRoute>
+                        <PageChat />
+                      </PrivateRoute>
+                     )}
+                  />
+                </Routes>
+                <ToastContainer />
+              </Router>
+            </div>
+          </AuthProvider>
+        </SocketContext.Provider>
       </ErrorBoundary>
     </Provider>
   );
-}
+};
 
 export default App;

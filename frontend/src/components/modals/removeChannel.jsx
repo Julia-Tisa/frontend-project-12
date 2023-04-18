@@ -18,7 +18,7 @@ const RemoveChannel = ({ modalInfo, onHide }) => {
   const onHideHandler = () => {
     onHide();
     notifay();
-  }
+  };
 
   const handleSubmit = async () => {
     try {
@@ -58,7 +58,6 @@ const RemoveChannel = ({ modalInfo, onHide }) => {
       </Modal.Body>
     </Modal>
   );
-
 };
 
 export default RemoveChannel;

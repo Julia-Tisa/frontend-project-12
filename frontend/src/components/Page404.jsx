@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import NotFoundImage from '../images/404Img.jpeg'
 
-const BuildPage = () => {
+const Page404 = () => {
   const { t } = useTranslation();
 
   return (
@@ -16,5 +16,5 @@ const BuildPage = () => {
     </div>
   );
 };
-  
-  export const Page404 = () => BuildPage();
+
+export default Page404;

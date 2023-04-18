@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Form, Col, Card, Row, FormLabel, Image } from 'react-bootstrap';
+import {
+  Button, Form, Col, Card, Row, FormLabel, Image,
+} from 'react-bootstrap';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
@@ -8,7 +10,7 @@ import * as yup from 'yup';
 import { useAuth } from '../hooks/index.jsx';
 import imageLogin from '../images/loginImg.jpeg';
 
-const BuildPage = () => {
+const PageForm = () => {
   const { t } = useTranslation();
   const auth = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
@@ -29,7 +31,7 @@ const BuildPage = () => {
         .required(t('validation.required')),
       password: yup.string()
         .min(5, t('validation.passwordLengthMin'))
-        .required(t('validation.required'))
+        .required(t('validation.required')),
     }),
     onSubmit: async (values) => {
       setAuthFailed(false);
@@ -53,60 +55,60 @@ const BuildPage = () => {
   });
 
   return (
-    <div fluid="true" className="h-100">
+    <div className="h-100">
       <Row className="justify-content-center align-content-center h-100">
         <Col className="col-12 col-md-8 col-xxl-6">
           <Card className="shadow-sm">
             <Card.Body className="p-5 row">
-            <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
+              <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
                 <Image src={imageLogin} roundedCircle alt={t('headers.entrance')} />
               </Col>
-          <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
-            <fieldset disabled={formik.isSubmitting}>
-              <h1 className="text-center mb-4">{t('headers.entrance')}</h1>
-              <Form.Group className="mb-3 form-floating" controlId="username">
-                <Form.Control
-                  type="text"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.username}
-                  placeholder={t('form.yourUsername')}
-                  autoComplete="username"
-                  isInvalid={(formik.touched.username && formik.errors.username) || authFailed}
-                  ref={inputRef}
-                />
-              <FormLabel>{t('form.yourUsername')}</FormLabel>
-              </Form.Group>
+              <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
+                <fieldset disabled={formik.isSubmitting}>
+                  <h1 className="text-center mb-4">{t('headers.entrance')}</h1>
+                  <Form.Group className="mb-3 form-floating" controlId="username">
+                    <Form.Control
+                      type="text"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.username}
+                      placeholder={t('form.yourUsername')}
+                      autoComplete="username"
+                      isInvalid={(formik.touched.username && formik.errors.username) || authFailed}
+                      ref={inputRef}
+                    />
+                    <FormLabel>{t('form.yourUsername')}</FormLabel>
+                  </Form.Group>
 
-              <Form.Group className="mb-3 form-floating" controlId="password">
-                <Form.Control
-                  type="password"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.password}
-                  placeholder={t('form.password')}
-                  autoComplete="password"
-                  isInvalid={formik.touched.password && formik.errors.password}
-                />
-                <FormLabel>{t('form.password')}</FormLabel>
-                <Form.Control.Feedback type="invalid" className="invalid-feedback">{t('form.errorLogin')}</Form.Control.Feedback>
-              </Form.Group>
-              <Button type="submit" variant="outline-primary" className="w-100 mb-3">{t('buttons.entrance')}</Button>
-            </fieldset>
-          </Form>
-        </Card.Body>
-        <Card.Footer className="p-4">
-        <div className="text-center">
-        <span>{t('isReg')}</span>
-        {' '}
-        <NavLink to="/signup">{t('buttons.record')}</NavLink>
-        </div>
-        </Card.Footer>
-        </Card>
+                  <Form.Group className="mb-3 form-floating" controlId="password">
+                    <Form.Control
+                      type="password"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.password}
+                      placeholder={t('form.password')}
+                      autoComplete="password"
+                      isInvalid={formik.touched.password && formik.errors.password}
+                    />
+                    <FormLabel>{t('form.password')}</FormLabel>
+                    <Form.Control.Feedback type="invalid" className="invalid-feedback">{t('form.errorLogin')}</Form.Control.Feedback>
+                  </Form.Group>
+                  <Button type="submit" variant="outline-primary" className="w-100 mb-3">{t('buttons.entrance')}</Button>
+                </fieldset>
+              </Form>
+            </Card.Body>
+            <Card.Footer className="p-4">
+              <div className="text-center">
+                <span>{t('isReg')}</span>
+                {' '}
+                <NavLink to="/signup">{t('buttons.registration')}</NavLink>
+              </div>
+            </Card.Footer>
+          </Card>
         </Col>
-        </Row>
-        </div>
+      </Row>
+    </div>
   );
 };
 
-export const PageForm = () => BuildPage();
+export default PageForm;

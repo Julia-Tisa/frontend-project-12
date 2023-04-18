@@ -1,7 +1,9 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Modal, Form, Button, FormControl } from 'react-bootstrap';
+import {
+  Modal, Form, Button, FormControl,
+} from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -35,7 +37,7 @@ const RenameChannel = ({ modalInfo, onHide }) => {
   const onHideHandler = () => {
     onHide();
     notifay();
-  }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -46,7 +48,7 @@ const RenameChannel = ({ modalInfo, onHide }) => {
       try {
         webSocket.renamingChannel({ name, id: currentChannel.id }, onHideHandler);
         formik.values.name = '';
-      } catch(error) {
+      } catch (error) {
         console.log(error.message);
       }
     },

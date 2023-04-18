@@ -11,7 +11,7 @@ const init = async () => {
   i18n.use(initReactI18next).init({
     resources,
     fallbackLng: 'ru',
-  })
+  });
   const store = configureStore({
     reducer,
   });

@@ -11,7 +11,7 @@ const Header = ({ messagesCount, currentChannel }) => {
         {currentChannel ? currentChannel.name : null}
       </p>
       <span className="text-muted">
-      {t('messages.messagesCount', { count: messagesCount })}
+        {t('messages.messagesCount', { count: messagesCount })}
       </span>
     </div>
   );

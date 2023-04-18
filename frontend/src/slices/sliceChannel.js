@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-
 const getData = createAsyncThunk(
   'channels/setInitialState',
   async (authHeader, { rejectWithValue }) => {
@@ -47,7 +46,7 @@ const channelsSlice = createSlice({
         state.channels = payload.channels;
         state.currentChannelId = payload.currentChannelId;
       })
-      .addCase(getData.rejected, (state, { payload }) => {
+      .addCase(getData.rejected, (state) => {
         state.loading = false;
       });
   },
