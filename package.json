@@ -2,7 +2,7 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "[![Actions Status](https://github.com/Julia-Tisa/frontend-project-12/workflows/hexlet-check/badge.svg)](https://github.com/Julia-Tisa/frontend-project-12/actions)",
-  "main": "src/index.js",
+  "main": "app.js",
   "scripts": {
     "build": "npm run build --prefix frontend",
     "start": "npx start-server -s ./frontend/build",
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Julia-Tisa/frontend-project-12#readme",
   "dependencies": {
+    "@fastify/static": "^6.10.1",
     "@hexlet/chat-server": "^1.1.6"
   }
 }
