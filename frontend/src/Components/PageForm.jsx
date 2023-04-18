@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Form, Col, Card, Row, FormLabel } from 'react-bootstrap';
+import { Button, Form, Col, Card, Row, FormLabel, Image, Container } from 'react-bootstrap';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useAuth } from '../hooks/index.jsx';
+import imageLogin from '../images/loginImg.jpeg';
 
 const BuildPage = () => {
   const { t } = useTranslation();
@@ -27,7 +28,7 @@ const BuildPage = () => {
         .max(20, t('validation.nameLengthMax'))
         .required(t('validation.required')),
       password: yup.string()
-        .min(5, t('validation.passwordLengthMin'))
+        .min(6, t('validation.passwordLengthMin'))
         .required(t('validation.required'))
     }),
     onSubmit: async (values) => {
@@ -52,11 +53,14 @@ const BuildPage = () => {
   });
 
   return (
-    <div className="container-fluid h-100">
+    <div fluid className="h-100">
       <Row className="justify-content-center align-content-center h-100">
         <Col className="col-12 col-md-8 col-xxl-6">
           <Card className="shadow-sm">
             <Card.Body className="p-5 row">
+            <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
+                <Image src={imageLogin} roundedCircle alt={t('headers.entrance')} />
+              </Col>
           <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
             <fieldset disabled={formik.isSubmitting}>
               <h1 className="text-center mb-4">{t('headers.entrance')}</h1>

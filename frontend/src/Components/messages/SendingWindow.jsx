@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, InputGroup } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { BsArrowRightSquare } from 'react-icons/bs';
@@ -47,7 +47,7 @@ const SendingWindow = ({ currentChannel }) => {
         className="py-1 border rounded-2"
         onSubmit={formik.handleSubmit}
       >
-        <Form.Group className="input-group">
+        <InputGroup>
           <Form.Control
             name="body"
             ref={messageRef}
@@ -69,7 +69,7 @@ const SendingWindow = ({ currentChannel }) => {
           >
             <BsArrowRightSquare size={20} />
           </Button>
-        </Form.Group>
+        </InputGroup>
       </Form>
     </div>
   );

@@ -9,13 +9,13 @@ export default {
           record: 'Регистрация',
         },
         validation: {
-          nameLengthMin: 'В имени должно быть не менее 3 символов',
-          nameLengthMax: 'В имени должно быть не более 20 символов',
-          passwordLengthMin: 'Пароль не может содержать меньше 5 символов',
+          nameLengthMin: 'От 3 до 20 символов,',
+          nameLengthMax: 'От 3 до 20 символов',
+          passwordLengthMin: 'Не менее 6 символов',
           required: 'Обязательное поле',
-          passwordConfirmation: 'Пароли не совпадают',
-          channelNameMin: 'В названии должно быть не менее 3 символов',
-          channelNameMax: 'В названии должно быть не более 20 символов',
+          passwordConfirmation: 'Пароли должны совпадать',
+          channelNameMin: 'От 3 до 20 символов,',
+          channelNameMax: 'От 3 до 20 символов,',
           channelExists: 'Название должно быть уникальным',
         },
         form: {
@@ -51,7 +51,7 @@ export default {
           add: 'Канал создан',
           remove: 'Канал удалён',
           rename: 'Канал переименован',
-          error: 'Ошибка загрузки данных',
+          error: 'Ошибка соединения',
 
         },
         page404: 'Ошибка 404. Страница не найдена.',
