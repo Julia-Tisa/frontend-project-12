@@ -98,7 +98,7 @@ const BuildPage = () => {
                   placeholder="password"
                   name="password"
                   id="password"
-                  autoComplete="current-password"
+                  autoComplete="password"
                   isInvalid={formik.touched.password && formik.errors.password}
                   required
                 />

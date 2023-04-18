@@ -51,7 +51,7 @@ const SendingWindow = ({ currentChannel }) => {
           <Form.Control
             name="body"
             ref={messageRef}
-            aria-label="New message"
+            aria-label="Новое сообщение"
             placeholder={t('messages.enter')}
             className="border-0 p-0 ps-2"
             value={formik.values.body}
