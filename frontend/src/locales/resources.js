@@ -19,7 +19,8 @@ export default {
           channelExists: 'Название должно быть уникальным',
         },
         form: {
-          username: 'Ваш ник',
+          yourUsername: 'Ваш ник',
+          username: 'Имя пользователя',
           password: 'Пароль',
           passwordConfirmation: 'Подтвердите пароль',
           errorLogin: 'Неверные имя пользователя или пароль',

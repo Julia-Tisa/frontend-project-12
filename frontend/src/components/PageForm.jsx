@@ -77,7 +77,7 @@ const BuildPage = () => {
                   required
                   ref={inputRef}
                 />
-                <FormLabel>{t('form.username')}</FormLabel>
+                <FormLabel>{t('form.yourUsername')}</FormLabel>
               </Form.Group>
               <Form.Group className="mb-4 form-floating">
                 <Form.Control
