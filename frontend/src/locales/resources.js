@@ -9,13 +9,13 @@ export default {
           record: 'Регистрация',
         },
         validation: {
-          nameLengthMin: 'От 3 до 20 символов,',
+          nameLengthMin: 'От 3 до 20 символов',
           nameLengthMax: 'От 3 до 20 символов',
           passwordLengthMin: 'Не менее 6 символов',
           required: 'Обязательное поле',
           passwordConfirmation: 'Пароли должны совпадать',
-          channelNameMin: 'От 3 до 20 символов,',
-          channelNameMax: 'От 3 до 20 символов,',
+          channelNameMin: 'От 3 до 20 символов',
+          channelNameMax: 'От 3 до 20 символов',
           channelExists: 'Название должно быть уникальным',
         },
         form: {
