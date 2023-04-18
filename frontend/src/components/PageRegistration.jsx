@@ -62,42 +62,40 @@ const BuildPage = () => {
   });
 
   return (
-    <Container className="container-fluid h-100">
-      <Row className="justify-content-center align-content-center h-100">
-        <Col className="col-12 col-md-8 col-xxl-6">
+    <Container fluid className="h-100">
+      <Row className="justify-content-center align-items-center h-100">
+        <Col xs={12} md={8} xxl={6}>
           <Card className="shadow-sm">
-            <Card.Body className="p-5 row">
+            <Card.Body className="d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
             <Col xs={12} md={6} className="d-flex align-items-center justify-content-center">
                 <Image src={registrationImage} roundedCircle alt={t('headers.registration')} />
               </Col>
-          <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
+          <Form onSubmit={formik.handleSubmit} className="w-50">
             <fieldset disabled={formik.isSubmitting}>
             <h1 className="text-center mb-4">{t('headers.registration')}</h1>
-              <Form.Group className="mb-3 form-floating">
+              <Form.Group className="mb-3 form-floating" controlId="username">
                 <Form.Control
+                  type="text"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.username}
-                  placeholder="username"
-                  name="username"
-                  id="username"
+                  placeholder={t('form.username')}
                   autoComplete="username"
                   isInvalid={(formik.touched.username && formik.errors.username) || regFailed}
                   required
                   ref={inputRef}
                 />
-              <FormLabel htmlFor="username">{t('form.username')}</FormLabel>
+              <FormLabel>{t('form.username')}</FormLabel>
               <Form.Control.Feedback type="invalid" className="invalid-feedback">{formik.errors.username || t('exists')}</Form.Control.Feedback>
               </Form.Group>
-              <Form.Group className="mb-4 form-floating">
+
+              <Form.Group className="mb-3 form-floating" controlId="password">
                 <Form.Control
                   type="password"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.password}
-                  placeholder="password"
-                  name="password"
-                  id="password"
+                  placeholder={t('form.password')}
                   autoComplete="password"
                   isInvalid={formik.touched.password && formik.errors.password}
                   required
@@ -105,15 +103,14 @@ const BuildPage = () => {
                 <FormLabel htmlFor="password">{t('form.password')}</FormLabel>
                 <Form.Control.Feedback type="invalid" className="invalid-feedback">{formik.errors.password}</Form.Control.Feedback>
               </Form.Group>
-              <Form.Group className="mb-4 form-floating">
+
+              <Form.Group className="mb-3 form-floating">
                 <Form.Control
                   type="password"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.passwordConfirmation}
-                  placeholder="passwordConfirmation"
-                  name="passwordConfirmation"
-                  id="passwordConfirmation"
+                  placeholder={t('form.passwordConfirmation')}
                   autoComplete="passwordConfirmation"
                   isInvalid={formik.touched.passwordConfirmation && formik.errors.passwordConfirmation}
                   required
