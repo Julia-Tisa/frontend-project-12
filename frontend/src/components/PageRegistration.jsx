@@ -82,7 +82,6 @@ const BuildPage = () => {
                   placeholder={t('form.username')}
                   autoComplete="username"
                   isInvalid={(formik.touched.username && formik.errors.username) || regFailed}
-                  required
                   ref={inputRef}
                 />
               <FormLabel>{t('form.username')}</FormLabel>
@@ -98,13 +97,12 @@ const BuildPage = () => {
                   placeholder={t('form.password')}
                   autoComplete="password"
                   isInvalid={formik.touched.password && formik.errors.password}
-                  required
                 />
-                <FormLabel htmlFor="password">{t('form.password')}</FormLabel>
+                <FormLabel>{t('form.password')}</FormLabel>
                 <Form.Control.Feedback type="invalid" className="invalid-feedback">{formik.errors.password}</Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group className="mb-3 form-floating">
+              <Form.Group className="mb-3 form-floating" controlId="passwordConfirmation">
                 <Form.Control
                   type="password"
                   onChange={formik.handleChange}
@@ -113,7 +111,6 @@ const BuildPage = () => {
                   placeholder={t('form.passwordConfirmation')}
                   autoComplete="passwordConfirmation"
                   isInvalid={formik.touched.passwordConfirmation && formik.errors.passwordConfirmation}
-                  required
                 />
                 <FormLabel>{t('form.passwordConfirmation')}</FormLabel>
                 <Form.Control.Feedback type="invalid" className="invalid-feedback">{formik.errors.passwordConfirmation}</Form.Control.Feedback>
