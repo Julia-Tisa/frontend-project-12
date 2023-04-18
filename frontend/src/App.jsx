@@ -1,15 +1,18 @@
 import React, { useState, useCallback, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate, Link } from 'react-router-dom';
 import { Button, Navbar, Container } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+import { io } from 'socket.io-client';
 import { Page404 } from './components/Page404.jsx';
 import { PageForm } from './components/PageForm.jsx';
 import { PageChat } from './components/PageChat.jsx';
 import { PageRegistration } from './components/PageRegistration.jsx';
 import { AuthContext, SocketContext } from './contexts/index.jsx';
 import { useAuth } from './hooks/index.jsx';
-import { io } from 'socket.io-client';
 import { actions } from './slices/index.js';
-import { useDispatch } from 'react-redux';
 
 const {
   addMessage,
@@ -67,14 +70,16 @@ const PrivateRoute = ({ children }) => {
 
 const AuthButton = () => {
   const auth = useAuth();
+  const { t } = useTranslation();
   return (
     auth.loggedIn
-      ? <Button onClick={auth.logOut}>Exit</Button>
+      ? <Button onClick={auth.logOut}>{t('buttons.exit')}</Button>
       : null
   );
 };
 
 function App() {
+  const { t } = useTranslation();
   const webSocket = io();
   const dispatch = useDispatch();
 
@@ -138,14 +143,14 @@ function App() {
   return (
     <SocketContext.Provider value={webSocketValue}>
     <AuthProvider>
+    <div className="d-flex flex-column h-100">
       <Router>
       <Navbar bg="white" expand="lg" className="shadow-sm">
         <Container>
-          <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
+          <Navbar.Brand as={Link} to="/">{t('headers.logo')}</Navbar.Brand>
           <AuthButton />
         </Container>
       </Navbar>
-      <div className="container p-3">
           <Routes>
             <Route path='*' element={<Page404 />} />
             <Route path="/login" element={<PageForm />} />
@@ -156,8 +161,9 @@ function App() {
                 </PrivateRoute>
               )} />
           </Routes>
-        </div>
+          <ToastContainer />
       </Router>
+      </div>
     </AuthProvider>
     </SocketContext.Provider>
   );

@@ -1,12 +1,14 @@
-import axios from 'axios';
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Form, Col, Card, Row, FormLabel } from 'react-bootstrap';
 import { useNavigate, NavLink } from 'react-router-dom';
-import { useAuth } from '../hooks/index.jsx';
+import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { useAuth } from '../hooks/index.jsx';
 
 const BuildPage = () => {
+  const { t } = useTranslation();
   const auth = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
@@ -21,12 +23,12 @@ const BuildPage = () => {
     },
     validationSchema: yup.object().shape({
       username: yup.string()
-        .min(3, 'Must be longer than 3 characters')
-        .max(20, 'Nice try, nobody has a first name that long')
-        .required('Required'),
+        .min(3, t('validation.nameLengthMin'))
+        .max(20, t('validation.nameLengthMax'))
+        .required(t('validation.required')),
       password: yup.string()
-        .min(5, 'Must be longer than 5 characters')
-        .required('Required')
+        .min(5, t('validation.passwordLengthMin'))
+        .required(t('validation.required'))
     }),
     onSubmit: async (values) => {
       setAuthFailed(false);
@@ -57,6 +59,7 @@ const BuildPage = () => {
             <Card.Body className="p-5 row">
           <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
             <fieldset disabled={formik.isSubmitting}>
+              <h1 className="text-center mb-4">{t('headers.entrance')}</h1>
               <Form.Group className="mb-3 form-floating">
                 <Form.Control
                   onChange={formik.handleChange}
@@ -70,7 +73,7 @@ const BuildPage = () => {
                   required
                   ref={inputRef}
                 />
-                <FormLabel>Username</FormLabel>
+                <FormLabel>{t('form.username')}</FormLabel>
               </Form.Group>
               <Form.Group className="mb-4 form-floating">
                 <Form.Control
@@ -85,18 +88,18 @@ const BuildPage = () => {
                   isInvalid={authFailed}
                   required
                 />
-                <FormLabel>Password</FormLabel>
-                <Form.Control.Feedback type="invalid" className="invalid-feedback">the username or password is incorrect</Form.Control.Feedback>
+                <FormLabel>{t('form.password')}</FormLabel>
+                <Form.Control.Feedback type="invalid" className="invalid-feedback">{t('form.errorLogin')}</Form.Control.Feedback>
               </Form.Group>
-              <Button type="submit" variant="outline-primary" className="w-100 mb-3">Submit</Button>
+              <Button type="submit" variant="outline-primary" className="w-100 mb-3">{t('buttons.entrance')}</Button>
             </fieldset>
           </Form>
         </Card.Body>
         <Card.Footer className="p-4">
         <div className="text-center">
-        <span>Don't have an account?</span>
+        <span>{t('isReg')}</span>
         {' '}
-        <NavLink to="/signup">Sign Up</NavLink>
+        <NavLink to="/signup">{t('buttons.record')}</NavLink>
         </div>
         </Card.Footer>
         </Card>

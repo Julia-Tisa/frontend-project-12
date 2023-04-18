@@ -1,11 +1,13 @@
 import React, { useRef, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { BsArrowRightSquare } from 'react-icons/bs';
 import * as yup from 'yup';
 import { useAuth, useSocket } from '../../hooks/index.jsx';
 
 const SendingWindow = ({ currentChannel }) => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const socket = useSocket();
   const messageRef = useRef(null);
@@ -44,12 +46,11 @@ const SendingWindow = ({ currentChannel }) => {
         onSubmit={formik.handleSubmit}
       >
         <Form.Group className="input-group">
-        <Form.Label visuallyHidden htmlFor="body">Enter your message here...</Form.Label>
           <Form.Control
             name="body"
             ref={messageRef}
             aria-label="New message"
-            placeholder="Enter your message here..."
+            placeholder={t('messages.enter')}
             className="border-0 p-0 ps-2"
             value={formik.values.body}
             onChange={formik.handleChange}
@@ -65,7 +66,6 @@ const SendingWindow = ({ currentChannel }) => {
             onClick={formik.handleSubmit}
           >
             <BsArrowRightSquare size={20} />
-            <span className="visually-hidden">Send</span>
           </Button>
         </Form.Group>
       </Form>

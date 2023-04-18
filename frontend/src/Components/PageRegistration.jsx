@@ -1,28 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Form, Col, Card, Row, FormLabel } from 'react-bootstrap';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import * as yup from 'yup';
 import { useAuth } from '../hooks/index.jsx';
 
-const validationRegistration = yup.object().shape({
-  username: yup.string()
-    .min(3, 'Must be longer than 3 characters')
-    .max(20, 'Nice try, nobody has a first name that long')
-    .required('Required'),
-  password: yup.string()
-    .min(5, 'Must be longer than 5 characters')
-    .required('Required'),
-  passwordConfirmation: yup.string()
-    .required('Required')
-    .oneOf(
-      [yup.ref('password'), null],
-      'Password confirmation does not match to password',
-    )
-});
-
 const BuildPage = () => {
+  const { t } = useTranslation();
   const auth = useAuth();
   const [regFailed, setRegFailed] = useState(false);
   const inputRef = useRef();
@@ -57,7 +43,21 @@ const BuildPage = () => {
         throw err;
       }
     },
-    validationSchema: validationRegistration,
+    validationSchema: yup.object().shape({
+      username: yup.string()
+        .min(3, t('validation.nameLengthMin'))
+        .max(20, t('validation.nameLengthMax'))
+        .required(t('validation.required')),
+      password: yup.string()
+        .min(5, t('validation.passwordLengthMin'))
+        .required(t('validation.required')),
+      passwordConfirmation: yup.string()
+        .required(t('validation.required'))
+        .oneOf(
+          [yup.ref('password'), null],
+          t('validation.passwordConfirmation'),
+        )
+    }),
   });
 
   return (
@@ -68,6 +68,7 @@ const BuildPage = () => {
             <Card.Body className="p-5 row">
           <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
             <fieldset disabled={formik.isSubmitting}>
+            <h1 className="text-center mb-4">{t('headers.registration')}</h1>
               <Form.Group className="mb-3 form-floating">
                 <Form.Control
                   onChange={formik.handleChange}
@@ -81,8 +82,8 @@ const BuildPage = () => {
                   required
                   ref={inputRef}
                 />
-              <FormLabel htmlFor="username">Username</FormLabel>
-              <Form.Control.Feedback type="invalid" className="invalid-feedback">{formik.errors.username || 'This user already exists'}</Form.Control.Feedback>
+              <FormLabel htmlFor="username">{t('form.username')}</FormLabel>
+              <Form.Control.Feedback type="invalid" className="invalid-feedback">{formik.errors.username || t('exists')}</Form.Control.Feedback>
               </Form.Group>
               <Form.Group className="mb-4 form-floating">
                 <Form.Control
@@ -97,7 +98,7 @@ const BuildPage = () => {
                   isInvalid={formik.touched.password && formik.errors.password}
                   required
                 />
-                <FormLabel htmlFor="password">Password</FormLabel>
+                <FormLabel htmlFor="password">{t('form.password')}</FormLabel>
                 <Form.Control.Feedback type="invalid" className="invalid-feedback">{formik.errors.password}</Form.Control.Feedback>
               </Form.Group>
               <Form.Group className="mb-4 form-floating">
@@ -113,18 +114,18 @@ const BuildPage = () => {
                   isInvalid={formik.touched.passwordConfirmation && formik.errors.passwordConfirmation}
                   required
                 />
-                <FormLabel>Repeat your password</FormLabel>
+                <FormLabel>{t('form.passwordConfirmation')}</FormLabel>
                 <Form.Control.Feedback type="invalid" className="invalid-feedback">{formik.errors.passwordConfirmation}</Form.Control.Feedback>
               </Form.Group>
-              <Button type="submit" variant="outline-primary" className="w-100 mb-3">Submit</Button>
+              <Button type="submit" variant="outline-primary" className="w-100 mb-3">{t('buttons.registration')}</Button>
             </fieldset>
           </Form>
         </Card.Body>
         <Card.Footer className="p-4">
         <div className="text-center">
-        <span>Do you already logIn?</span>
+        <span>{t('isLogin')}</span>
         {' '}
-        <NavLink to="/login">Log In</NavLink>
+        <NavLink to="/login">{t('buttons.entrance')}</NavLink>
         </div>
         </Card.Footer>
         </Card>
