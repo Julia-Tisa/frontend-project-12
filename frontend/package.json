@@ -31,10 +31,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "npm run build --prefix frontend",
+    "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "postinstall": "npm ci --prefix frontend"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [

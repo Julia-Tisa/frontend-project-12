@@ -5,9 +5,9 @@
   "main": "app.js",
   "scripts": {
     "build": "npm run build --prefix frontend",
-    "start": "npx start-server -s ./frontend/build",
+    "start": "start-server -s ./frontend/build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "npm ci --prefix frontend"
+    "postinstall": "cd frontend && npm ci"
   },
   "repository": {
     "type": "git",
