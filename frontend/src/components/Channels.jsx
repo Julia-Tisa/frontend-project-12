@@ -35,6 +35,7 @@ const Channels = () => {
         <span>{t('channels.channels')}</span>
         <Button variant="light" className="p-0 text-primary btn btn-group-vertical" onClick={() => openModal('add')}>
           <BsPlusSquare />
+          <span className="visually-hidden">+</span>
           </Button>
       </div>
       <Nav
@@ -58,7 +59,9 @@ const Channels = () => {
                       <span className="me-1">#</span>
                       {name}
                     </Button>
-                    <Dropdown.Toggle variant={id === currentChannelId ? 'secondary' : 'light'} />
+                    <Dropdown.Toggle variant={id === currentChannelId ? 'secondary' : 'light'} >
+                    <span className="visually-hidden">{t('channels.manage')}</span>
+                    </Dropdown.Toggle>
                     <Dropdown.Menu>
                       <Dropdown.Item onClick={() => openModal('remove', channel)}>
                         {t('channels.remove')}
