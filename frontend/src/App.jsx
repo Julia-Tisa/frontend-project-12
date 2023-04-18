@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation, Navigate, Link } f
 import { Button, Navbar, Container } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
+import { Provider, ErrorBoundary } from '@rollbar/react';
 import 'react-toastify/dist/ReactToastify.css'
 import { io } from 'socket.io-client';
 import leoProfanity from 'leo-profanity';
@@ -22,6 +23,11 @@ const {
   removeChannel,
   renameChannel,
 } = actions;
+
+const rollbarConfig = {
+  accessToken: '90af0afc5d2e42a48506e1e33736eb1a',
+  environment: 'production',
+};
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -146,7 +152,9 @@ function App() {
   );
 
   return (
-    <SocketContext.Provider value={webSocketValue}>
+    <Provider config={rollbarConfig}>
+      <ErrorBoundary>
+      <SocketContext.Provider value={webSocketValue}>
     <AuthProvider>
     <div className="d-flex flex-column h-100">
       <Router>
@@ -171,6 +179,8 @@ function App() {
       </div>
     </AuthProvider>
     </SocketContext.Provider>
+      </ErrorBoundary>
+    </Provider>
   );
 }
 
