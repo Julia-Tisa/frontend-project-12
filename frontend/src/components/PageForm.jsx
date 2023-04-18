@@ -64,31 +64,29 @@ const BuildPage = () => {
           <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
             <fieldset disabled={formik.isSubmitting}>
               <h1 className="text-center mb-4">{t('headers.entrance')}</h1>
-              <Form.Group className="mb-3 form-floating">
+              <Form.Group className="mb-3 form-floating" controlId="username">
                 <Form.Control
+                  type="text"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.username}
-                  placeholder="username"
-                  name="username"
-                  id="username"
+                  placeholder={t('form.yourUsername')}
                   autoComplete="username"
-                  isInvalid={authFailed}
+                  isInvalid={(formik.touched.username && formik.errors.username) || authFailed}
                   ref={inputRef}
                 />
-                <FormLabel>{t('form.yourUsername')}</FormLabel>
+              <FormLabel>{t('form.yourUsername')}</FormLabel>
               </Form.Group>
-              <Form.Group className="mb-4 form-floating">
+
+              <Form.Group className="mb-3 form-floating" controlId="password">
                 <Form.Control
                   type="password"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.password}
-                  placeholder="password"
-                  name="password"
-                  id="password"
-                  autoComplete="current-password"
-                  isInvalid={authFailed}
+                  placeholder={t('form.password')}
+                  autoComplete="password"
+                  isInvalid={formik.touched.password && formik.errors.password}
                 />
                 <FormLabel>{t('form.password')}</FormLabel>
                 <Form.Control.Feedback type="invalid" className="invalid-feedback">{t('form.errorLogin')}</Form.Control.Feedback>
