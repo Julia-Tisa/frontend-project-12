@@ -8,4 +8,5 @@ const selector = {
     rename: renameChannel,
 };
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default (selectedOption) => selector[selectedOption];
