@@ -28,7 +28,7 @@ const BuildPage = () => {
         .max(20, t('validation.nameLengthMax'))
         .required(t('validation.required')),
       password: yup.string()
-        .min(6, t('validation.passwordLengthMin'))
+        .min(5, t('validation.passwordLengthMin'))
         .required(t('validation.required'))
     }),
     onSubmit: async (values) => {
@@ -74,7 +74,6 @@ const BuildPage = () => {
                   id="username"
                   autoComplete="username"
                   isInvalid={authFailed}
-                  required
                   ref={inputRef}
                 />
                 <FormLabel>{t('form.yourUsername')}</FormLabel>
@@ -90,7 +89,6 @@ const BuildPage = () => {
                   id="password"
                   autoComplete="current-password"
                   isInvalid={authFailed}
-                  required
                 />
                 <FormLabel>{t('form.password')}</FormLabel>
                 <Form.Control.Feedback type="invalid" className="invalid-feedback">{t('form.errorLogin')}</Form.Control.Feedback>
