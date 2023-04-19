@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { BsPlusSquare } from 'react-icons/bs';
-import { Nav, Button, Dropdown, ButtonGroup } from 'react-bootstrap';
+import {
+  Nav, Button, Dropdown, ButtonGroup,
+} from 'react-bootstrap';
 import { actions } from '../slices/index.js';
 import selectedModal from './modals/index.js';
 
@@ -38,13 +40,13 @@ const Channels = () => {
             <span className="visually-hidden">+</span>
           </Button>
         </div>
-      <Nav
-        as="ul"
-        className="flex-column nav-pills nav-fill px-2"
-        id="channels-box"
-        activeKey={currentChannelId}
-      >
-        {
+        <Nav
+          as="ul"
+          className="flex-column nav-pills nav-fill px-2"
+          id="channels-box"
+          activeKey={currentChannelId}
+        >
+          {
           channels.map((channel) => {
             const { id, name, removable } = channel;
             if (removable) {
@@ -60,7 +62,7 @@ const Channels = () => {
                       {name}
                     </Button>
                     <Dropdown.Toggle variant={id === currentChannelId ? 'secondary' : 'light'}>
-                    <span className="visually-hidden">{t('channels.manage')}</span>
+                      <span className="visually-hidden">{t('channels.manage')}</span>
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                       <Dropdown.Item onClick={() => openModal('remove', channel)}>
@@ -74,23 +76,23 @@ const Channels = () => {
                 </Nav.Item>
               );
             }
-            return ( 
-            <Nav.Item className="w-100" key={id} as="li">
-              <Button
-                variant={id === currentChannelId ? 'secondary' : 'light'}
-                className="w-100 rounded-0 text-start"
-                onClick={() => handleClick(id)}
-              >
-                <span className="me-1">#</span>
-                {name}
-              </Button>
-            </Nav.Item>
+            return (
+              <Nav.Item className="w-100" key={id} as="li">
+                <Button
+                  variant={id === currentChannelId ? 'secondary' : 'light'}
+                  className="w-100 rounded-0 text-start"
+                  onClick={() => handleClick(id)}
+                >
+                  <span className="me-1">#</span>
+                  {name}
+                </Button>
+              </Nav.Item>
             );
           })
         }
-      </Nav>
-    </div>
-    {modalWindow({ modalInfo, closeModal })}
+        </Nav>
+      </div>
+      {modalWindow({ modalInfo, closeModal })}
     </>
   );
 };
