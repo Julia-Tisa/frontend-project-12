@@ -1,5 +1,7 @@
 import React, { useRef, useEffect } from 'react';
-import { Form, Button, InputGroup } from 'react-bootstrap';
+import {
+  Form, Button, InputGroup, Container,
+} from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { BsArrowRightSquare } from 'react-icons/bs';
@@ -41,7 +43,7 @@ const SendingWindow = ({ currentChannel }) => {
     }),
   });
   return (
-    <div className="mt-auto px-5 py-3">
+    <Container className="mt-auto px-5 py-3">
       <Form
         noValidate
         className="py-1 border rounded-2"
@@ -71,7 +73,7 @@ const SendingWindow = ({ currentChannel }) => {
           </Button>
         </InputGroup>
       </Form>
-    </div>
+    </Container>
   );
 };
 

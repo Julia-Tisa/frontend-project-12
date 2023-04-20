@@ -1,12 +1,13 @@
 /* eslint-disable no-param-reassign */
 import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import routes from '../routes.js';
 
 const getData = createAsyncThunk(
   'channels/setInitialState',
   async (authHeader, { rejectWithValue }) => {
     try {
-      const response = await axios.get('api/v1/data', { headers: authHeader });
+      const response = await axios.get(routes.dataPath(), { headers: authHeader });
       return response.data;
     } catch (error) {
       return rejectWithValue({ message: error.message });

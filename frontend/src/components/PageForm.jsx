@@ -4,11 +4,13 @@ import {
 } from 'react-bootstrap';
 import { useNavigate, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useAuth } from '../hooks/index.jsx';
 import imageLogin from '../images/loginImg.jpeg';
+import routes from '../routes.js';
 
 const PageForm = () => {
   const { t } = useTranslation();
@@ -16,9 +18,12 @@ const PageForm = () => {
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
   const navigate = useNavigate();
+
   useEffect(() => {
     inputRef.current.focus();
   }, []);
+
+  const notifay = () => toast.error(t('toast.unknownError'));
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -26,30 +31,28 @@ const PageForm = () => {
     },
     validationSchema: yup.object().shape({
       username: yup.string()
-        .min(3, t('validation.nameLengthMin'))
-        .max(20, t('validation.nameLengthMax'))
+        .min(1, t('validation.nameLengthMin'))
         .required(t('validation.required')),
       password: yup.string()
-        .min(5, t('validation.passwordLengthMin'))
+        .min(1, t('validation.passwordLengthMin'))
         .required(t('validation.required')),
     }),
     onSubmit: async (values) => {
       setAuthFailed(false);
 
       try {
-        const res = await axios.post('api/v1/login', values);
+        const res = await axios.post(routes.loginPath(), values);
         localStorage.setItem('userId', JSON.stringify({ ...res.data }));
         localStorage.setItem('name', values.username);
         auth.logIn({ username: values.username });
-        navigate('/');
+        navigate(routes.pageChatPath());
       } catch (err) {
-        formik.setSubmitting(false);
         if (err.isAxiosError && err.response.status === 401) {
           setAuthFailed(true);
           inputRef.current.select();
           return;
         }
-        throw err;
+        notifay();
       }
     },
   });
@@ -64,44 +67,42 @@ const PageForm = () => {
                 <Image src={imageLogin} roundedCircle alt={t('headers.entrance')} />
               </Col>
               <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
-                <fieldset disabled={formik.isSubmitting}>
-                  <h1 className="text-center mb-4">{t('headers.entrance')}</h1>
-                  <Form.Group className="mb-3 form-floating" controlId="username">
-                    <Form.Control
-                      type="text"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.username}
-                      placeholder={t('form.yourUsername')}
-                      autoComplete="username"
-                      isInvalid={(formik.touched.username && formik.errors.username) || authFailed}
-                      ref={inputRef}
-                    />
-                    <FormLabel>{t('form.yourUsername')}</FormLabel>
-                  </Form.Group>
+                <h1 className="text-center mb-4">{t('headers.entrance')}</h1>
+                <Form.Group className="mb-3 form-floating" controlId="username">
+                  <Form.Control
+                    type="text"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.username}
+                    placeholder={t('form.yourUsername')}
+                    autoComplete="username"
+                    ref={inputRef}
+                    isInvalid={authFailed}
+                  />
+                  <FormLabel>{t('form.yourUsername')}</FormLabel>
+                </Form.Group>
 
-                  <Form.Group className="mb-3 form-floating" controlId="password">
-                    <Form.Control
-                      type="password"
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      value={formik.values.password}
-                      placeholder={t('form.password')}
-                      autoComplete="password"
-                      isInvalid={formik.touched.password && formik.errors.password}
-                    />
-                    <FormLabel>{t('form.password')}</FormLabel>
-                    <Form.Control.Feedback type="invalid" className="invalid-feedback">{t('form.errorLogin')}</Form.Control.Feedback>
-                  </Form.Group>
-                  <Button type="submit" variant="outline-primary" className="w-100 mb-3">{t('buttons.entrance')}</Button>
-                </fieldset>
+                <Form.Group className="mb-3 form-floating" controlId="password">
+                  <Form.Control
+                    type="password"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.password}
+                    placeholder={t('form.password')}
+                    autoComplete="password"
+                    isInvalid={authFailed}
+                  />
+                  <FormLabel>{t('form.password')}</FormLabel>
+                  <Form.Control.Feedback type="invalid" className="invalid-feedback" tooltip>{t('form.errorLogin')}</Form.Control.Feedback>
+                </Form.Group>
+                <Button disabled={authFailed} type="submit" variant="outline-primary" className="w-100 mb-3">{t('buttons.entrance')}</Button>
               </Form>
             </Card.Body>
             <Card.Footer className="p-4">
               <div className="text-center">
                 <span>{t('isReg')}</span>
                 {' '}
-                <NavLink to="/signup">{t('buttons.registration')}</NavLink>
+                <NavLink to={routes.pageRegistrationPath()}>{t('buttons.registration')}</NavLink>
               </div>
             </Card.Footer>
           </Card>

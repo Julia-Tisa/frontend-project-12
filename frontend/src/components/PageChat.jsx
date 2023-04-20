@@ -6,33 +6,25 @@ import { toast } from 'react-toastify';
 import Channels from './Channels.jsx';
 import Messages from './messages/MainComponent.jsx';
 import { actions } from '../slices/index.js';
-
-const getAuthHeader = () => {
-  const userId = JSON.parse(localStorage.getItem('userId'));
-
-  if (userId && userId.token) {
-    return { Authorization: `Bearer ${userId.token}` };
-  }
-
-  return {};
-};
+import { useAuth } from '../hooks/index.jsx';
 
 const PageChat = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const auth = useAuth();
   const channelsInfo = useSelector((s) => s);
 
   useEffect(() => {
     const notifay = () => toast.error(t('toast.error'));
     const getData = async () => {
-      const authHeader = await getAuthHeader();
+      const authHeader = auth.getAuthHeader();
       dispatch(actions.getData(authHeader)).catch(() => {
         notifay();
       });
     };
 
     getData();
-  }, [dispatch, t]);
+  }, [auth, dispatch, t]);
 
   if (channelsInfo.loading) {
     return (

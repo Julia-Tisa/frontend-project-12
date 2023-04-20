@@ -19,7 +19,7 @@ The command in the terminal: control + C
 https://frontend-project-12-production-afa4.up.railway.app
 
 ## Project description:
-This project is a simplified version of the chat. The project is written using the react framework and the reduxjs/toolkit library
+A simple and user-friendly chat was created using React and Node.js. The project allows users to send messages in real-time. Socket.IO library was used for implementing real-time functionality and React was used for building the user interface. The project also includes a user authentication system. In addition to the real-time sending feature, the project also provides a simple yet modern user interface, making it easy for users to navigate and interact with the chat.
 
 ![chat example](chat1.png)
 ![chat example](chat2.png)
