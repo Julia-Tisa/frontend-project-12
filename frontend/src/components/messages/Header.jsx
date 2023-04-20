@@ -4,15 +4,16 @@ import { useTranslation } from 'react-i18next';
 const Header = ({ messagesCount, currentChannel }) => {
   const { t } = useTranslation();
   return (
-    <div className="bg-light mb-4 p-3 shadow-sm small">
+    <div className="border-bottom bg-light shadow-sm small p-3">
       <p className="m-0">
-        #
-        {' '}
-        {currentChannel ? currentChannel.name : null}
+        <b>
+          <span className="rounded px-1 me-1 fw-light small">#</span>
+          {currentChannel ? currentChannel.name : null}
+        </b>
       </p>
-      <span className="text-muted">
+      <p className="text-muted m-0">
         {t('messages.messagesCount', { count: messagesCount })}
-      </span>
+      </p>
     </div>
   );
 };

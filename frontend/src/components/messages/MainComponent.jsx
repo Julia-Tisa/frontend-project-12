@@ -16,19 +16,14 @@ const MainComponent = () => {
     .filter((message) => message.channelId === currentChannelId);
 
   return (
-    <Col className="p-0 h-100">
-      <div className="d-flex flex-column h-100">
-        <Header
-          messagesCount={currentMessages.length}
-          currentChannel={currentChannel}
-        />
-        <div id="messages-box" className="chat-messages overflow-auto px-5">
-          {currentMessages.map((message) => (
-            <Message message={message} key={message.id} />
-          ))}
-        </div>
-        <SendingWindow currentChannel={currentChannel} />
+    <Col className="p-0 h-100 d-flex flex-column">
+      <Header messagesCount={currentMessages.length} currentChannel={currentChannel} />
+      <div id="messages-box" className="chat-messages overflow-auto px-5">
+        {currentMessages.map((message) => (
+          <Message message={message} key={message.id} />
+        ))}
       </div>
+      <SendingWindow currentChannel={currentChannel} />
     </Col>
   );
 };
