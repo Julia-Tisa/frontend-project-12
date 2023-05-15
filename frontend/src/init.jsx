@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo } from 'react';
-import { Provider, useDispatch } from 'react-redux';
+import React from 'react';
+import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import i18next from 'i18next';
@@ -18,75 +18,7 @@ const {
   renameChannel,
 } = actions;
 
-const SocketApiProvider = ({ children }) => {
-  const webSocket = io();
-  const dispatch = useDispatch();
-
-  webSocket.on('newMessage', (payload) => {
-    dispatch(addMessage(payload));
-  });
-  webSocket.on('newChannel', (payload) => {
-    dispatch(addChannel(payload));
-  });
-  webSocket.on('removeChannel', (payload) => {
-    dispatch(removeChannel(payload.id));
-  });
-  webSocket.on('renameChannel', (payload) => {
-    dispatch(renameChannel(payload));
-  });
-
-  const sendMessage = useCallback((...args) => webSocket.emit('newMessage', ...args), [webSocket]);
-  const newChannel = useCallback((name, cb) => {
-    webSocket.emit('newChannel', { name }, (response) => {
-      const { status, data: { id } } = response;
-
-      if (status === 'ok') {
-        dispatch(setCurrentChannel({ id }));
-        cb();
-        return response.data;
-      }
-      return status;
-    });
-  }, [dispatch, webSocket]);
-  const removingChannel = useCallback((id, cb) => {
-    webSocket.emit('removeChannel', id, (response) => {
-      const { status } = response;
-      if (status === 'ok') {
-        dispatch(removeChannel(id));
-        cb();
-      }
-      return status;
-    });
-  }, [dispatch, webSocket]);
-  const renamingChannel = useCallback(({ id, name }, cb) => {
-    webSocket.emit('renameChannel', { id, name }, (response) => {
-      const { status } = response;
-      if (status === 'ok') {
-        dispatch(renameChannel({ id, name }));
-        cb();
-      }
-      return status;
-    });
-  }, [dispatch, webSocket]);
-
-  const webSocketValue = useMemo(
-    () => ({
-      sendMessage,
-      newChannel,
-      removingChannel,
-      renamingChannel,
-    }),
-    [sendMessage, newChannel, removingChannel, renamingChannel],
-  );
-
-  return (
-    <ApiContext.Provider value={webSocketValue}>
-      {children}
-    </ApiContext.Provider>
-  );
-};
-
-const Init = async () => {
+const init = async () => {
   const store = configureStore({
     reducer,
   });
@@ -101,15 +33,71 @@ const Init = async () => {
   const en = leoProfanity.getDictionary('en');
   leoProfanity.add(ru, en);
 
+  const webSocket = io();
+
+  webSocket.on('newMessage', (payload) => {
+    store.dispatch(addMessage(payload));
+  });
+  webSocket.on('newChannel', (payload) => {
+    store.dispatch(addChannel(payload));
+  });
+  webSocket.on('removeChannel', (payload) => {
+    store.dispatch(removeChannel(payload.id));
+  });
+  webSocket.on('renameChannel', (payload) => {
+    store.dispatch(renameChannel(payload));
+  });
+
+  const sendMessage = (...args) => webSocket.emit('newMessage', ...args);
+  const newChannel = (name, cb) => {
+    webSocket.emit('newChannel', { name }, (response) => {
+      const { status, data: { id } } = response;
+
+      if (status === 'ok') {
+        store.dispatch(setCurrentChannel({ id }));
+        cb();
+        return response.data;
+      }
+      return status;
+    });
+  };
+  const removingChannel = (id, cb) => {
+    webSocket.emit('removeChannel', id, (response) => {
+      const { status } = response;
+      if (status === 'ok') {
+        store.dispatch(removeChannel(id));
+        cb();
+      }
+      return status;
+    });
+  };
+  const renamingChannel = ({ id, name }, cb) => {
+    webSocket.emit('renameChannel', { id, name }, (response) => {
+      const { status } = response;
+      if (status === 'ok') {
+        store.dispatch(renameChannel({ id, name }));
+        cb();
+      }
+      return status;
+    });
+  };
+
+  const webSocketValue = {
+    sendMessage,
+    newChannel,
+    removingChannel,
+    renamingChannel,
+  };
+
   return (
     <Provider store={store}>
       <I18nextProvider i18n={i18n}>
-        <SocketApiProvider>
+        <ApiContext.Provider value={webSocketValue}>
           <App />
-        </SocketApiProvider>
+        </ApiContext.Provider>
       </I18nextProvider>
     </Provider>
   );
 };
 
-export default Init;
+export default init;

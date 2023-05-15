@@ -35,9 +35,7 @@ const SignUp = () => {
       try {
         const { username, password } = values;
         const res = await axios.post(routes.registrationPath(), { username, password });
-        localStorage.setItem('userId', JSON.stringify({ ...res.data }));
-        localStorage.setItem('name', username);
-        auth.logIn({ username });
+        auth.logIn(res.data);
         navigate(routes.pageChatPath());
       } catch (err) {
         if (err.response.status === 409) {

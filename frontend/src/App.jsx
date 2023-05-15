@@ -21,23 +21,23 @@ const rollbarConfig = {
 };
 
 const AuthProvider = ({ children }) => {
-  const savedUserData = JSON.parse(localStorage.getItem('userId'));
+  const savedUserData = JSON.parse(localStorage.getItem('user'));
   const [user, setUser] = useState(
     savedUserData ? { username: savedUserData.username } : null,
   );
 
-  const logIn = useCallback((human) => {
-    setUser({ username: human.username });
+  const logIn = useCallback((userData) => {
+    localStorage.setItem('user', JSON.stringify(userData));
+    setUser({ username: userData.username });
   }, []);
 
   const logOut = useCallback(() => {
-    localStorage.removeItem('userId');
-    localStorage.removeItem('name');
+    localStorage.removeItem('user');
     setUser(null);
   }, []);
 
   const getAuthHeader = useCallback(() => {
-    const userId = JSON.parse(localStorage.getItem('userId'));
+    const userId = JSON.parse(localStorage.getItem('user'));
 
     if (userId && userId.token) {
       return { Authorization: `Bearer ${userId.token}` };

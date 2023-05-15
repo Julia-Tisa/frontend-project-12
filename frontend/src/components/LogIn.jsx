@@ -42,9 +42,7 @@ const LogIn = () => {
 
       try {
         const res = await axios.post(routes.loginPath(), values);
-        localStorage.setItem('userId', JSON.stringify({ ...res.data }));
-        localStorage.setItem('name', values.username);
-        auth.logIn({ username: values.username });
+        auth.logIn(res.data);
         navigate(routes.pageChatPath());
       } catch (err) {
         if (err.isAxiosError && err.response.status === 401) {
