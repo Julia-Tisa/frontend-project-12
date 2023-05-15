@@ -12,7 +12,7 @@ import { useAuth } from '../hooks/index.jsx';
 import registrationImage from '../images/registrationImg.jpg';
 import routes from '../routes.js';
 
-const PageRegistration = () => {
+const SignUp = () => {
   const { t } = useTranslation();
   const auth = useAuth();
   const [regFailed, setRegFailed] = useState(false);
@@ -126,7 +126,7 @@ const PageRegistration = () => {
               <div className="text-center">
                 <span>{t('isLogin')}</span>
                 {' '}
-                <NavLink to={routes.pageFormPath()}>{t('buttons.entrance')}</NavLink>
+                <NavLink to={routes.pageLogInPath()}>{t('buttons.entrance')}</NavLink>
               </div>
             </Card.Footer>
           </Card>
@@ -136,4 +136,4 @@ const PageRegistration = () => {
   );
 };
 
-export default PageRegistration;
+export default SignUp;

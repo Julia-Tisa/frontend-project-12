@@ -7,12 +7,12 @@ import { useFormik } from 'formik';
 import { BsArrowRightSquare } from 'react-icons/bs';
 import leoProfanity from 'leo-profanity';
 import * as yup from 'yup';
-import { useAuth, useSocket } from '../../hooks/index.jsx';
+import { useAuth, useApi } from '../../hooks/index.jsx';
 
 const SendingWindow = ({ currentChannel }) => {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const socket = useSocket();
+  const socket = useApi();
   const messageRef = useRef(null);
 
   useEffect(() => {

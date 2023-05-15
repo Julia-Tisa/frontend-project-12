@@ -9,7 +9,7 @@ import * as yup from 'yup';
 import leoProfanity from 'leo-profanity';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useSocket } from '../../hooks/index.jsx';
+import { useApi } from '../../hooks/index.jsx';
 
 const validationChannelName = (channelsNames, t) => yup.object().shape({
   name: yup
@@ -25,7 +25,7 @@ const AddChannel = ({ onHide }) => {
   const { t } = useTranslation();
   const channels = useSelector((state) => state.channelsInfo.channels);
   const channelsName = channels.map((channel) => channel.name);
-  const webSocket = useSocket();
+  const webSocket = useApi();
   const inputRef = useRef(null);
 
   useEffect(() => {

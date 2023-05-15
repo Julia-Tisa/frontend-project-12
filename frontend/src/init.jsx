@@ -6,7 +6,7 @@ import i18next from 'i18next';
 import { io } from 'socket.io-client';
 import leoProfanity from 'leo-profanity';
 import App from './App.jsx';
-import { SocketContext } from './contexts/index.jsx';
+import { ApiContext } from './contexts/index.jsx';
 import reducer, { actions } from './slices/index.js';
 import resources from './locales/resources.js';
 
@@ -80,9 +80,9 @@ const SocketApiProvider = ({ children }) => {
   );
 
   return (
-    <SocketContext.Provider value={webSocketValue}>
+    <ApiContext.Provider value={webSocketValue}>
       {children}
-    </SocketContext.Provider>
+    </ApiContext.Provider>
   );
 };
 

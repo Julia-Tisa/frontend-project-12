@@ -7,10 +7,10 @@ import { useTranslation } from 'react-i18next';
 import { ToastContainer } from 'react-toastify';
 import { Provider, ErrorBoundary } from '@rollbar/react';
 import 'react-toastify/dist/ReactToastify.css';
-import Page404 from './components/Page404.jsx';
-import PageForm from './components/PageForm.jsx';
+import LogIn from './components/LogIn.jsx';
 import PageChat from './components/PageChat.jsx';
-import PageRegistration from './components/PageRegistration.jsx';
+import SignUp from './components/SignUp.jsx';
+import Page404 from './components/Page404.jsx';
 import { AuthContext } from './contexts/index.jsx';
 import { useAuth } from './hooks/index.jsx';
 import routes from './routes.js';
@@ -67,7 +67,7 @@ const PrivateRoute = ({ children }) => {
   const location = useLocation();
 
   return (
-    auth.user ? children : <Navigate to={routes.pageFormPath()} state={{ from: location }} />
+    auth.user ? children : <Navigate to={routes.pageLogInPath()} state={{ from: location }} />
   );
 };
 
@@ -97,9 +97,8 @@ const App = () => {
                 </Container>
               </Navbar>
               <Routes>
-                <Route path={routes.page404Path()} element={<Page404 />} />
-                <Route path={routes.pageFormPath()} element={<PageForm />} />
-                <Route path={routes.pageRegistrationPath()} element={<PageRegistration />} />
+                <Route path={routes.pageLogInPath()} element={<LogIn />} />
+                <Route path={routes.pageSignUpPath()} element={<SignUp />} />
                 <Route
                   path={routes.pageChatPath()}
                   element={(
@@ -108,6 +107,7 @@ const App = () => {
                     </PrivateRoute>
                     )}
                 />
+                <Route path={routes.page404Path()} element={<Page404 />} />
               </Routes>
               <ToastContainer />
             </Router>

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import NotFoundImage from '../images/404Img.jpeg';
 import routes from '../routes';
@@ -12,7 +13,7 @@ const Page404 = () => {
       <p className="text-muted">
         {t('redirect')}
         {' '}
-        <a href={routes.pageChatPath()}>{t('pageForm')}</a>
+        <Link to={routes.pageChatPath()}>{t('pageForm')}</Link>
       </p>
     </div>
   );

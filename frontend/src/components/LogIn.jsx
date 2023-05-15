@@ -12,7 +12,7 @@ import { useAuth } from '../hooks/index.jsx';
 import imageLogin from '../images/loginImg.jpeg';
 import routes from '../routes.js';
 
-const PageForm = () => {
+const LogIn = () => {
   const { t } = useTranslation();
   const auth = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
@@ -95,14 +95,14 @@ const PageForm = () => {
                   <FormLabel>{t('form.password')}</FormLabel>
                   <Form.Control.Feedback type="invalid" className="invalid-feedback" tooltip>{t('form.errorLogin')}</Form.Control.Feedback>
                 </Form.Group>
-                <Button disabled={authFailed} type="submit" variant="outline-primary" className="w-100 mb-3">{t('buttons.entrance')}</Button>
+                <Button disabled={formik.isSubmitting} type="submit" variant="outline-primary" className="w-100 mb-3">{t('buttons.entrance')}</Button>
               </Form>
             </Card.Body>
             <Card.Footer className="p-4">
               <div className="text-center">
                 <span>{t('isReg')}</span>
                 {' '}
-                <NavLink to={routes.pageRegistrationPath()}>{t('buttons.registration')}</NavLink>
+                <NavLink to={routes.pageSignUpPath()}>{t('buttons.registration')}</NavLink>
               </div>
             </Card.Footer>
           </Card>
@@ -112,4 +112,4 @@ const PageForm = () => {
   );
 };
 
-export default PageForm;
+export default LogIn;

@@ -3,13 +3,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Modal, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import { useSocket } from '../../hooks/index.jsx';
+import { useApi } from '../../hooks/index.jsx';
 import { actions } from '../../slices/index.js';
 
 const RemoveChannel = ({ modalInfo, onHide }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const webSocket = useSocket();
+  const webSocket = useApi();
   const { currentChannelId } = useSelector((state) => state.channelsInfo);
 
   const { id } = modalInfo.channel;

@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import leoProfanity from 'leo-profanity';
-import { useSocket } from '../../hooks/index.jsx';
+import { useApi } from '../../hooks/index.jsx';
 
 const validationChannelName = (channelsNames, t) => yup.object().shape({
   name: yup
@@ -24,7 +24,7 @@ const RenameChannel = ({ modalInfo, onHide }) => {
   const { t } = useTranslation();
   const channels = useSelector((state) => state.channelsInfo.channels);
   const channelsName = channels.map((channel) => channel.name);
-  const webSocket = useSocket();
+  const webSocket = useApi();
   const inputRef = useRef(null);
 
   const currentChannel = modalInfo.channel;
