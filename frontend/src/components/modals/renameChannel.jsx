@@ -45,7 +45,8 @@ const RenameChannel = ({ modalInfo, onHide }) => {
     onSubmit: async (values) => {
       const name = leoProfanity.clean(values.name);
       try {
-        api.renamingChannel({ name, id: currentChannel.id }, onHideHandler);
+        api.renamingChannel({ name, id: currentChannel.id });
+        onHideHandler();
         formik.values.name = '';
       } catch (error) {
         console.log(error.message);

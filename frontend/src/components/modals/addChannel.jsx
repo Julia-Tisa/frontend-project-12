@@ -44,7 +44,8 @@ const AddChannel = ({ onHide }) => {
     onSubmit: async (values) => {
       const name = leoProfanity.clean(values.name);
       try {
-        await api.newChannel(name, onHideHandler);
+        await api.newChannel(name);
+        onHideHandler();
         formik.values.name = '';
       } catch (error) {
         console.log(error.message);

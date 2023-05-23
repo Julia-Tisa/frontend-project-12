@@ -48,38 +48,34 @@ const init = async () => {
     store.dispatch(renameChannel(payload));
   });
 
-  const sendMessage = (...args) => webSocket.emit('newMessage', ...args);
-  const newChannel = (name, cb) => {
-    webSocket.emit('newChannel', { name }, (response) => {
-      const { status, data: { id } } = response;
+  const promisify = (...args) => new Promise((resolve, reject) => {
+    webSocket.emit(...args, (response) => {
+      const { status } = response;
+      if (status === 'ok') {
+        resolve(response);
+      }
+      reject();
+    });
+  });
 
-      if (status === 'ok') {
-        store.dispatch(setCurrentChannel({ id }));
-        cb();
-        return response.data;
-      }
-      return status;
-    });
+  const sendMessage = async (...args) => {
+    await promisify('newMessage', ...args);
   };
-  const removingChannel = (id, cb) => {
-    webSocket.emit('removeChannel', id, (response) => {
-      const { status } = response;
-      if (status === 'ok') {
-        store.dispatch(removeChannel(id));
-        cb();
-      }
-      return status;
-    });
+
+  const newChannel = async (name) => {
+    const response = await promisify('newChannel', { name });
+    const { data: { id } } = response;
+    store.dispatch(setCurrentChannel({ id }));
   };
-  const renamingChannel = ({ id, name }, cb) => {
-    webSocket.emit('renameChannel', { id, name }, (response) => {
-      const { status } = response;
-      if (status === 'ok') {
-        store.dispatch(renameChannel({ id, name }));
-        cb();
-      }
-      return status;
-    });
+
+  const removingChannel = async (id) => {
+    await promisify('removeChannel', id);
+    store.dispatch(removeChannel(id));
+  };
+
+  const renamingChannel = async ({ id, name }) => {
+    await promisify('renameChannel', { id, name });
+    store.dispatch(renameChannel({ id, name }));
   };
 
   const webSocketValue = {

@@ -21,10 +21,11 @@ const RemoveChannel = ({ modalInfo, onHide }) => {
 
   const handleSubmit = async () => {
     try {
-      await api.removingChannel({ id }, onHideHandler);
+      await api.removingChannel({ id });
       if (currentChannelId === id) {
         dispatch(actions.setCurrentChannel({ id: 1 }));
       }
+      onHideHandler();
     } catch (error) {
       console.error(error);
     }

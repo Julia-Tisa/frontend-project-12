@@ -49,9 +49,11 @@ const LogIn = () => {
           inputRef.current.select();
           return;
         }
-        if (err.response.status !== 401) {
-          toast.error(t('toast.unknownError'));
+        if (err.isAxiosError) {
+          toast.error(t('toast.error'));
+          return;
         }
+        toast.error(t('toast.unknownError'));
       }
     },
   });

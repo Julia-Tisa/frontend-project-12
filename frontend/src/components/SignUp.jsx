@@ -37,12 +37,16 @@ const SignUp = () => {
         auth.logIn(res.data);
         navigate(routes.pageChatPath());
       } catch (err) {
-        if (err.response.status === 409) {
+        if (err.isAxiosError && err.response.status === 409) {
           setRegFailed(true);
           inputRef.current.select();
-        } else {
-          toast.error(t('toast.unknownError'));
+          return;
         }
+        if (err.isAxiosError) {
+          toast.error(t('toast.error'));
+          return;
+        }
+        toast.error(t('toast.unknownError'));
       }
     },
     validationSchema: yup.object().shape({
