@@ -23,7 +23,6 @@ const LogIn = () => {
     inputRef.current.focus();
   }, []);
 
-  const notifay = () => toast.error(t('toast.unknownError'));
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -50,7 +49,9 @@ const LogIn = () => {
           inputRef.current.select();
           return;
         }
-        notifay();
+        if (err.response.status !== 401) {
+          toast.error(t('toast.unknownError'));
+        }
       }
     },
   });

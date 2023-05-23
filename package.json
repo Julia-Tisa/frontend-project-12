@@ -1,7 +1,7 @@
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
-  "description": "[![Actions Status](https://github.com/Julia-Tisa/frontend-project-12/workflows/hexlet-check/badge.svg)](https://github.com/Julia-Tisa/frontend-project-12/actions)",
+  "description": "An analogue of Slack chat, a real-time React/Redux application using AJAX, REST and websockets",
   "main": "app.js",
   "scripts": {
     "build": "npm run build --prefix frontend",
@@ -20,7 +20,6 @@
   },
   "homepage": "https://github.com/Julia-Tisa/frontend-project-12#readme",
   "dependencies": {
-    "@fastify/static": "^6.10.1",
     "@hexlet/chat-server": "^1.1.6"
   }
 }

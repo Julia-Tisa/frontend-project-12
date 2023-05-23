@@ -22,7 +22,6 @@ const SignUp = () => {
     inputRef.current.focus();
   }, []);
 
-  const notifay = () => toast.error(t('toast.unknownError'));
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -41,9 +40,9 @@ const SignUp = () => {
         if (err.response.status === 409) {
           setRegFailed(true);
           inputRef.current.select();
-          return;
+        } else {
+          toast.error(t('toast.unknownError'));
         }
-        notifay();
       }
     },
     validationSchema: yup.object().shape({

@@ -12,7 +12,7 @@ import { useAuth, useApi } from '../../hooks/index.jsx';
 const SendingWindow = ({ currentChannel }) => {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const socket = useApi();
+  const api = useApi();
   const messageRef = useRef(null);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const SendingWindow = ({ currentChannel }) => {
       };
 
       try {
-        await socket.sendMessage(message);
+        await api.sendMessage(message);
         formik.values.body = '';
       } catch (error) {
         console.error(error.message);

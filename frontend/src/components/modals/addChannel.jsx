@@ -25,17 +25,16 @@ const AddChannel = ({ onHide }) => {
   const { t } = useTranslation();
   const channels = useSelector((state) => state.channelsInfo.channels);
   const channelsName = channels.map((channel) => channel.name);
-  const webSocket = useApi();
+  const api = useApi();
   const inputRef = useRef(null);
 
   useEffect(() => {
     inputRef.current.focus();
   }, []);
 
-  const notifay = () => toast.success(t('toast.add'));
   const onHideHandler = () => {
     onHide();
-    notifay();
+    toast.success(t('toast.add'));
   };
 
   const formik = useFormik({
@@ -45,7 +44,7 @@ const AddChannel = ({ onHide }) => {
     onSubmit: async (values) => {
       const name = leoProfanity.clean(values.name);
       try {
-        await webSocket.newChannel(name, onHideHandler);
+        await api.newChannel(name, onHideHandler);
         formik.values.name = '';
       } catch (error) {
         console.log(error.message);

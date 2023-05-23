@@ -9,20 +9,19 @@ import { actions } from '../../slices/index.js';
 const RemoveChannel = ({ modalInfo, onHide }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const webSocket = useApi();
+  const api = useApi();
   const { currentChannelId } = useSelector((state) => state.channelsInfo);
 
   const { id } = modalInfo.channel;
 
-  const notifay = () => toast.success(t('toast.remove'));
   const onHideHandler = () => {
     onHide();
-    notifay();
+    toast.success(t('toast.remove'));
   };
 
   const handleSubmit = async () => {
     try {
-      await webSocket.removingChannel({ id }, onHideHandler);
+      await api.removingChannel({ id }, onHideHandler);
       if (currentChannelId === id) {
         dispatch(actions.setCurrentChannel({ id: 1 }));
       }

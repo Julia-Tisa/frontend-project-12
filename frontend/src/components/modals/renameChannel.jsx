@@ -24,7 +24,7 @@ const RenameChannel = ({ modalInfo, onHide }) => {
   const { t } = useTranslation();
   const channels = useSelector((state) => state.channelsInfo.channels);
   const channelsName = channels.map((channel) => channel.name);
-  const webSocket = useApi();
+  const api = useApi();
   const inputRef = useRef(null);
 
   const currentChannel = modalInfo.channel;
@@ -33,10 +33,9 @@ const RenameChannel = ({ modalInfo, onHide }) => {
     inputRef.current.focus();
   }, []);
 
-  const notifay = () => toast.success(t('toast.rename'));
   const onHideHandler = () => {
     onHide();
-    notifay();
+    toast.success(t('toast.rename'));
   };
 
   const formik = useFormik({
@@ -46,7 +45,7 @@ const RenameChannel = ({ modalInfo, onHide }) => {
     onSubmit: async (values) => {
       const name = leoProfanity.clean(values.name);
       try {
-        webSocket.renamingChannel({ name, id: currentChannel.id }, onHideHandler);
+        api.renamingChannel({ name, id: currentChannel.id }, onHideHandler);
         formik.values.name = '';
       } catch (error) {
         console.log(error.message);

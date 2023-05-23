@@ -15,11 +15,10 @@ const PageChat = () => {
   const channelsInfo = useSelector((s) => s);
 
   useEffect(() => {
-    const notifay = () => toast.error(t('toast.error'));
     const getData = async () => {
       const authHeader = auth.getAuthHeader();
       dispatch(actions.getData(authHeader)).catch(() => {
-        notifay();
+        toast.error(t('toast.error'));
       });
     };
 
