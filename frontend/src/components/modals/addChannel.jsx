@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Modal, Form, Button, FormControl,
 } from 'react-bootstrap';
@@ -10,6 +10,7 @@ import leoProfanity from 'leo-profanity';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useApi } from '../../hooks/index.jsx';
+import { actions } from '../../slices/index.js';
 
 const validationChannelName = (channelsNames, t) => yup.object().shape({
   name: yup
@@ -22,6 +23,7 @@ const validationChannelName = (channelsNames, t) => yup.object().shape({
 });
 
 const AddChannel = ({ onHide }) => {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const channels = useSelector((state) => state.channelsInfo.channels);
   const channelsName = channels.map((channel) => channel.name);
@@ -44,7 +46,8 @@ const AddChannel = ({ onHide }) => {
     onSubmit: async (values) => {
       const name = leoProfanity.clean(values.name);
       try {
-        await api.newChannel(name);
+        const data = await api.newChannel(name);
+        dispatch(actions.setCurrentChannel(data));
         onHideHandler();
         formik.values.name = '';
       } catch (error) {
@@ -87,8 +90,7 @@ const AddChannel = ({ onHide }) => {
               <Button
                 variant="primary"
                 type="submit"
-                onClick={formik.handleSubmit}
-                disabled={formik.errors.name}
+                disabled={formik.isSubmitting}
               >
                 {t('channels.submit')}
               </Button>

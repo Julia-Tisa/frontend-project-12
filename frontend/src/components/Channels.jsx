@@ -8,7 +8,7 @@ import {
 import { actions } from '../slices/index.js';
 import selectedModal from './modals/index.js';
 
-const modalWindow = ({ modalInfo, closeModal }) => {
+const ModalWindow = ({ modalInfo, closeModal }) => {
   if (!modalInfo.type) {
     return null;
   }
@@ -96,7 +96,7 @@ const Channels = () => {
         }
         </Nav>
       </Col>
-      {modalWindow({ modalInfo, closeModal })}
+      <ModalWindow modalInfo={modalInfo} closeModal={closeModal} />
     </>
   );
 };

@@ -66,8 +66,7 @@ const SendingWindow = ({ currentChannel }) => {
             type="submit"
             style={{ border: 'none' }}
             variant="group-vertical"
-            disabled={formik.errors.body}
-            onClick={formik.handleSubmit}
+            disabled={formik.isSubmitting}
           >
             <BsArrowRightSquare size={20} />
           </Button>

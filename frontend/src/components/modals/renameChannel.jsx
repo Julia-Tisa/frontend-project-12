@@ -88,8 +88,7 @@ const RenameChannel = ({ modalInfo, onHide }) => {
               <Button
                 variant="primary"
                 type="submit"
-                onClick={formik.handleSubmit}
-                disabled={formik.errors.name}
+                disabled={formik.isSubmitting}
               >
                 {t('channels.submit')}
               </Button>

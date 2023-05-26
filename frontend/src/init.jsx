@@ -1,7 +1,8 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
+import { Provider as ErrorProvider, ErrorBoundary } from '@rollbar/react';
+import { configureStore } from '@reduxjs/toolkit';
 import i18next from 'i18next';
 import { io } from 'socket.io-client';
 import leoProfanity from 'leo-profanity';
@@ -13,10 +14,14 @@ import resources from './locales/resources.js';
 const {
   addMessage,
   addChannel,
-  setCurrentChannel,
   removeChannel,
   renameChannel,
 } = actions;
+
+const rollbarConfig = {
+  accessToken: process.env.ROLLBAR_TOKEN,
+  environment: 'production',
+};
 
 const init = async () => {
   const store = configureStore({
@@ -52,31 +57,19 @@ const init = async () => {
     webSocket.emit(...args, (response) => {
       const { status } = response;
       if (status === 'ok') {
-        resolve(response);
+        resolve(response.data);
       }
       reject();
     });
   });
 
-  const sendMessage = async (...args) => {
-    await promisify('newMessage', ...args);
-  };
+  const sendMessage = (...args) => promisify('newMessage', ...args);
 
-  const newChannel = async (name) => {
-    const response = await promisify('newChannel', { name });
-    const { data: { id } } = response;
-    store.dispatch(setCurrentChannel({ id }));
-  };
+  const newChannel = (name) => promisify('newChannel', { name });
 
-  const removingChannel = async (id) => {
-    await promisify('removeChannel', id);
-    store.dispatch(removeChannel(id));
-  };
+  const removingChannel = (id) => promisify('removeChannel', id);
 
-  const renamingChannel = async ({ id, name }) => {
-    await promisify('renameChannel', { id, name });
-    store.dispatch(renameChannel({ id, name }));
-  };
+  const renamingChannel = ({ id, name }) => promisify('renameChannel', { id, name });
 
   const webSocketValue = {
     sendMessage,
@@ -86,13 +79,17 @@ const init = async () => {
   };
 
   return (
-    <Provider store={store}>
-      <I18nextProvider i18n={i18n}>
-        <ApiContext.Provider value={webSocketValue}>
-          <App />
-        </ApiContext.Provider>
-      </I18nextProvider>
-    </Provider>
+    <ErrorProvider config={rollbarConfig}>
+      <ErrorBoundary>
+        <Provider store={store}>
+          <I18nextProvider i18n={i18n}>
+            <ApiContext.Provider value={webSocketValue}>
+              <App />
+            </ApiContext.Provider>
+          </I18nextProvider>
+        </Provider>
+      </ErrorBoundary>
+    </ErrorProvider>
   );
 };
 

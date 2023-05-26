@@ -17,8 +17,16 @@ const PageChat = () => {
   useEffect(() => {
     const getData = async () => {
       const authHeader = auth.getAuthHeader();
-      dispatch(actions.getData(authHeader)).catch(() => {
-        toast.error(t('toast.error'));
+      dispatch(actions.getData(authHeader)).catch((err) => {
+        if (err.isAxiosError && err.response.status === 401) {
+          auth.logOut();
+          return;
+        }
+        if (err.isAxiosError) {
+          toast.error(t('toast.error'));
+          return;
+        }
+        toast.error(t('toast.unknownError'));
       });
     };
 
